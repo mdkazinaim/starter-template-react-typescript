@@ -12,6 +12,9 @@ import gradient from "gradient-string";
 import ora from "ora";
 import cliProgress from "cli-progress";
 
+// Helper for smoother UI transitions
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const run = async () => {
   console.clear();
   console.log("");
@@ -116,7 +119,7 @@ const run = async () => {
     cliProgress.Presets.shades_classic
   );
 
-  progressBar.start(100, 0, { task: "Downloading template..." });
+  progressBar.start(100, 0, { task: "Initializing download..." });
 
   // Download template using giget
   try {
@@ -128,6 +131,7 @@ const run = async () => {
       }
     );
     progressBar.update(20, { task: "Template downloaded." });
+    await sleep(300);
   } catch (error) {
     progressBar.stop();
     console.error(chalk.red("\n✖ Failed to download template: " + error.message));
@@ -140,6 +144,7 @@ const run = async () => {
     let routesContent = readFileSync(routesPath, "utf-8");
 
     progressBar.update(35, { task: "Configuring Admin module..." });
+    await sleep(200);
     // Admin Pruning
     if (!selectedModules.includes("admin")) {
       rmSync(resolve(projectPath, "src/pages/Admin"), {
@@ -164,6 +169,7 @@ const run = async () => {
     }
 
     progressBar.update(50, { task: "Configuring User module..." });
+    await sleep(200);
     // User Pruning
     if (!selectedModules.includes("user")) {
       rmSync(resolve(projectPath, "src/pages/UserDashboard"), {
@@ -188,6 +194,7 @@ const run = async () => {
     }
 
     progressBar.update(65, { task: "Configuring Public module..." });
+    await sleep(200);
     // Public Pruning (Refined)
     if (!selectedModules.includes("public")) {
       rmSync(resolve(projectPath, "src/pages/Public"), {
@@ -233,6 +240,7 @@ const run = async () => {
     }
 
     progressBar.update(80, { task: "Cleaning up source code..." });
+    await sleep(200);
     // Final cleanup: Remove all remaining structural markers
     routesContent = routesContent.replace(/\/\/ \[[A-Z_]+\]\n?/g, "");
 
@@ -240,6 +248,7 @@ const run = async () => {
   }
 
   progressBar.update(90, { task: "Finalizing package.json..." });
+  await sleep(200);
 
   // 2. Package.json Cleanup
   const packageJsonPath = resolve(projectPath, "package.json");
@@ -280,17 +289,28 @@ const run = async () => {
   }
 
   progressBar.update(100, { task: "Configuration complete." });
+  await sleep(400);
   progressBar.stop();
 
   // Install dependencies
   console.log("");
   const installSpinner = ora(chalk.cyan("📦 Installing dependencies (this may take a minute)...")).start();
 
+  // Rotate messages to keep it feeling alive
+  const messages = ["Still working...", "Almost there...", "Organizing files...", "Finishing up..."];
+  let msgIndex = 0;
+  const interval = setInterval(() => {
+    installSpinner.text = chalk.cyan(`📦 Installing dependencies (${messages[msgIndex]})...`);
+    msgIndex = (msgIndex + 1) % messages.length;
+  }, 10000);
+
   const installResult = spawnSync("npm", ["install"], {
     cwd: projectPath,
     stdio: "ignore", // Hide npm noise to keep the spinner clean
     shell: true,
   });
+
+  clearInterval(interval);
 
   if (installResult.status !== 0) {
     installSpinner.fail(chalk.red("✖ Failed to install dependencies. Try running 'npm install' manually."));
