@@ -28,16 +28,19 @@ const run = async () => {
       },
     },
     {
-      type: "multiselect",
+      type: "select",
       name: "modules",
-      message: "Which modules do you want to include?",
+      message: "Which version of the template do you want?",
       choices: [
-        { title: "Public Pages", value: "public", selected: true },
-        { title: "Admin Dashboard", value: "admin", selected: true },
-        { title: "User Dashboard", value: "user", selected: true },
+        { title: "Full Template (Public + Admin + User)", value: ["public", "admin", "user"] },
+        { title: "Public + Admin Dashboard", value: ["public", "admin"] },
+        { title: "Admin + User Dashboard", value: ["admin", "user"] },
+        { title: "Public + User Dashboard", value: ["public", "user"] },
+        { title: "Public Pages Only", value: ["public"] },
+        { title: "Admin Dashboard Only", value: ["admin"] },
+        { title: "User Dashboard Only", value: ["user"] },
       ],
-      min: 1,
-      instructions: false,
+      initial: 0,
     },
   ]);
 
@@ -177,6 +180,9 @@ const run = async () => {
         }
       }
     }
+
+    // Final cleanup: Remove all remaining structural markers
+    routesContent = routesContent.replace(/\/\/ \[[A-Z_]+\]\n?/g, "");
 
     writeFileSync(routesPath, routesContent);
   }
