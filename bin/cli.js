@@ -294,28 +294,47 @@ const run = async () => {
 
   // Install dependencies
   console.log("");
-  const installSpinner = ora(chalk.cyan("📦 Installing dependencies (this may take a minute)...")).start();
+  const installBar = new cliProgress.SingleBar(
+    {
+      format: chalk.cyan("  {bar}") + " {percentage}% | {task}",
+      barCompleteChar: "\u2588",
+      barIncompleteChar: "\u2591",
+      hideCursor: true,
+    },
+    cliProgress.Presets.shades_classic
+  );
 
-  // Rotate messages to keep it feeling alive
-  const messages = ["Still working...", "Almost there...", "Organizing files...", "Finishing up..."];
-  let msgIndex = 0;
-  const interval = setInterval(() => {
-    installSpinner.text = chalk.cyan(`📦 Installing dependencies (${messages[msgIndex]})...`);
-    msgIndex = (msgIndex + 1) % messages.length;
-  }, 10000);
+  installBar.start(100, 0, { task: "Preparing installation..." });
+
+  // Simulated progress for npm install (since npm doesn't provide a steady stream)
+  let progress = 0;
+  const progressInterval = setInterval(() => {
+    if (progress < 40) progress += 2;
+    else if (progress < 70) progress += 1;
+    else if (progress < 95) progress += 0.5;
+    
+    const task = progress < 30 ? "Downloading packages..." : 
+                 progress < 70 ? "Linking dependencies..." : 
+                 "Building modules...";
+    
+    installBar.update(Math.floor(progress), { task });
+  }, 800);
 
   const installResult = spawnSync("npm", ["install"], {
     cwd: projectPath,
-    stdio: "ignore", // Hide npm noise to keep the spinner clean
+    stdio: "ignore",
     shell: true,
   });
 
-  clearInterval(interval);
+  clearInterval(progressInterval);
 
   if (installResult.status !== 0) {
-    installSpinner.fail(chalk.red("✖ Failed to install dependencies. Try running 'npm install' manually."));
+    installBar.stop();
+    console.log(chalk.red("\n✖ Failed to install dependencies. Try running 'npm install' manually.\n"));
   } else {
-    installSpinner.succeed(chalk.green("✨ Dependencies installed successfully."));
+    installBar.update(100, { task: "Dependencies installed!" });
+    installBar.stop();
+    console.log(chalk.green("\n✨ Dependencies installed successfully."));
   }
 
   // Success Message
