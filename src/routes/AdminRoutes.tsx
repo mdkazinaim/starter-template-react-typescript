@@ -14,13 +14,21 @@ import {
 } from "lucide-react";
 import { IoExtensionPuzzleOutline, IoSettingsOutline } from "react-icons/io5";
 
-import AdminDashboard from "@/pages/Admin/Dashboard/AdminDashboard";
-import Settings from "@/pages/Admin/Settings/Settings";
+import { lazy } from "react";
 import { Outlet } from "react-router-dom";
+import Loadable from "@/utils/Loadable";
+import { AdminSkeleton } from "@/common/Skeleton/Admin/AdminSkeleton";
 
-// Import new page components (assuming these exist or will be created)
-// For now, I'll use AdminDashboard as a placeholder for new elements if they don't exist.
-// You would replace these with actual component imports as needed.
+const AdminDashboard = Loadable(
+  lazy(() => import("@/pages/Admin/Dashboard/AdminDashboard")),
+  AdminSkeleton
+);
+const Settings = Loadable(
+  lazy(() => import("@/pages/Admin/Settings/Settings")),
+  AdminSkeleton
+);
+
+// Placeholder Loadable components
 const Overview = AdminDashboard;
 const Works = AdminDashboard;
 const Employees = AdminDashboard;

@@ -1,9 +1,31 @@
-import About from "../pages/Public/About/About";
-import Contact from "../pages/Public/Contact/Contact";
-import Services from "@/pages/Public/Services/Services";
-import Home from "@/pages/Public/Home/Home";
-import TableDemo from "@/pages/TableDemo";
-import FormDemo from "@/pages/FormDemo";
+import { lazy } from "react";
+import Loadable from "@/utils/Loadable";
+import { PublicSkeleton } from "@/common/Skeleton/Public/PublicSkeleton";
+
+const About = Loadable(
+  lazy(() => import("../pages/Public/About/About")),
+  PublicSkeleton
+);
+const Contact = Loadable(
+  lazy(() => import("../pages/Public/Contact/Contact")),
+  PublicSkeleton
+);
+const Services = Loadable(
+  lazy(() => import("@/pages/Public/Services/Services")),
+  PublicSkeleton
+);
+const Home = Loadable(
+  lazy(() => import("@/pages/Public/Home/Home")),
+  PublicSkeleton
+);
+const TableDemo = Loadable(
+  lazy(() => import("@/pages/TableDemo")),
+  PublicSkeleton
+);
+const FormDemo = Loadable(
+  lazy(() => import("@/pages/FormDemo")),
+  PublicSkeleton
+);
 
 
 export const publicRoutes = [
