@@ -24,7 +24,7 @@ const run = async () => {
   ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝        ██╔══██╗ ╚═══██╗   ██║   
   ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗      ██║  ██║██████╔╝   ██║   
    ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝      ╚═╝  ╚═╝╚═════╝    ╚═╝   
-      React + TypeScript Starter Pack CLI • Developed by mdkazinaim
+      React + TypeScript Starter Pack CLI
       `
     )
   );
@@ -102,29 +102,9 @@ const run = async () => {
   }
 
   console.log("");
-  const downloadSpinner = ora(
-    chalk.blue(`🚀 Creating your React app in ${chalk.bold(projectPath)}...`)
-  ).start();
+  console.log(chalk.cyan(`🚀 Creating your React app in ${projectPath}...`));
 
-  // Download template using giget
-  try {
-    await downloadTemplate(
-      "github:mdkazinaim/starter-template-react-typescript",
-      {
-        dir: projectPath,
-        force: true,
-      }
-    );
-    downloadSpinner.succeed(chalk.green("✨ Template downloaded successfully."));
-  } catch (error) {
-    downloadSpinner.fail(chalk.red("✖ Failed to download template: " + error.message));
-    process.exit(1);
-  }
-
-  // Cleanup & Configuration
-  console.log(chalk.blue("\n⚙ Configuring project modules..."));
-
-  // Progress Bar for configuration
+  // Progress Bar for overall process
   const progressBar = new cliProgress.SingleBar(
     {
       format:
@@ -136,14 +116,30 @@ const run = async () => {
     cliProgress.Presets.shades_classic
   );
 
-  progressBar.start(100, 0, { task: "Initializing..." });
+  progressBar.start(100, 0, { task: "Downloading template..." });
+
+  // Download template using giget
+  try {
+    await downloadTemplate(
+      "github:mdkazinaim/starter-template-react-typescript",
+      {
+        dir: projectPath,
+        force: true,
+      }
+    );
+    progressBar.update(20, { task: "Template downloaded." });
+  } catch (error) {
+    progressBar.stop();
+    console.error(chalk.red("\n✖ Failed to download template: " + error.message));
+    process.exit(1);
+  }
 
   // 1. Module Pruning Logic
   const routesPath = resolve(projectPath, "src/routes/Routes.tsx");
   if (existsSync(routesPath)) {
     let routesContent = readFileSync(routesPath, "utf-8");
 
-    progressBar.update(20, { task: "Checking Admin module..." });
+    progressBar.update(35, { task: "Configuring Admin module..." });
     // Admin Pruning
     if (!selectedModules.includes("admin")) {
       rmSync(resolve(projectPath, "src/pages/Admin"), {
@@ -167,7 +163,7 @@ const run = async () => {
       );
     }
 
-    progressBar.update(40, { task: "Checking User module..." });
+    progressBar.update(50, { task: "Configuring User module..." });
     // User Pruning
     if (!selectedModules.includes("user")) {
       rmSync(resolve(projectPath, "src/pages/UserDashboard"), {
@@ -191,7 +187,7 @@ const run = async () => {
       );
     }
 
-    progressBar.update(60, { task: "Checking Public module..." });
+    progressBar.update(65, { task: "Configuring Public module..." });
     // Public Pruning (Refined)
     if (!selectedModules.includes("public")) {
       rmSync(resolve(projectPath, "src/pages/Public"), {
@@ -283,12 +279,12 @@ const run = async () => {
     rmSync(binPath, { recursive: true, force: true });
   }
 
-  progressBar.update(100, { task: "Done!" });
+  progressBar.update(100, { task: "Configuration complete." });
   progressBar.stop();
 
   // Install dependencies
   console.log("");
-  const installSpinner = ora(chalk.blue("📦 Installing dependencies (this may take a minute)...")).start();
+  const installSpinner = ora(chalk.cyan("📦 Installing dependencies (this may take a minute)...")).start();
 
   const installResult = spawnSync("npm", ["install"], {
     cwd: projectPath,
@@ -297,9 +293,9 @@ const run = async () => {
   });
 
   if (installResult.status !== 0) {
-    installSpinner.fail(chalk.red("✖ Failed to install dependencies. Try running 'npm install' manually inside the project."));
+    installSpinner.fail(chalk.red("✖ Failed to install dependencies. Try running 'npm install' manually."));
   } else {
-    installSpinner.succeed(chalk.green("✔ Dependencies installed successfully."));
+    installSpinner.succeed(chalk.green("✨ Dependencies installed successfully."));
   }
 
   // Success Message
@@ -308,7 +304,7 @@ const run = async () => {
     gradient.morning.multiline(
       `
    🎉 SUCCESS!
-   🚀 Your project ${chalk.bold(appName)} is ready.
+   🚀 Your project ${appName} is ready.
       `
     )
   );
