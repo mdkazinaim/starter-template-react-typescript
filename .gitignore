@@ -40,4 +40,5 @@ GUIDE.md
 *.bat
 file_list.txt
 grep_bat_results.txt
+
 node_modules
