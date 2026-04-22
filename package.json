@@ -1,6 +1,6 @@
 {
   "name": "create-rst",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "type": "module",
   "bin": "./bin/cli.js",
   "description": "React + TypeScript Starter Pack CLI",

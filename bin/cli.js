@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { spawnSync } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import { existsSync, rmSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { resolve, basename } from "path";
 import chalk from "chalk";
@@ -320,15 +320,26 @@ const run = async () => {
     installBar.update(Math.floor(progress), { task });
   }, 800);
 
-  const installResult = spawnSync("npm", ["install"], {
-    cwd: projectPath,
-    stdio: "ignore",
-    shell: true,
-  });
+  // Async install function to allow progress bar to animate
+  const installDeps = () => {
+    return new Promise((resolve) => {
+      const child = spawn("npm", ["install"], {
+        cwd: projectPath,
+        stdio: "ignore",
+        shell: true,
+      });
+
+      child.on("close", (code) => {
+        resolve(code);
+      });
+    });
+  };
+
+  const exitCode = await installDeps();
 
   clearInterval(progressInterval);
 
-  if (installResult.status !== 0) {
+  if (exitCode !== 0) {
     installBar.stop();
     console.log(chalk.red("\n✖ Failed to install dependencies. Try running 'npm install' manually.\n"));
   } else {
