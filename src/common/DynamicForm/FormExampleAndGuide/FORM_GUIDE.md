@@ -162,7 +162,7 @@ The form supports three layout modes:
 - `vertical`: Fields stacked vertically (default).
 - `horizontal`: Fields specific spacing (customizable).
 - `grid`: Fields arranged in a grid.
-
+ 
 ```tsx
 <CommonForm
   layout="grid"

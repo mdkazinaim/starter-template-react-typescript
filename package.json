@@ -1,6 +1,6 @@
 {
   "name": "create-rst",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "type": "module",
   "bin": "./bin/cli.js",
   "description": "React + TypeScript Starter Pack CLI",
@@ -8,12 +8,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naim0018/starter-template-react-typescript.git"
+    "url": "git+https://github.com/mdkazinaim/starter-template-react-typescript.git"
   },
   "bugs": {
-    "url": "https://github.com/naim0018/starter-template-react-typescript/issues"
+    "url": "https://github.com/mdkazinaim/starter-template-react-typescript/issues"
   },
-  "homepage": "https://github.com/naim0018/starter-template-react-typescript#readme",
+  "homepage": "https://github.com/mdkazinaim/starter-template-react-typescript#readme",
   "keywords": [
     "react",
     "typescript",

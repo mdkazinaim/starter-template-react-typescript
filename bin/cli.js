@@ -10,10 +10,11 @@ import validateNpmName from "validate-npm-package-name";
 
 const run = async () => {
   let projectName = process.argv[2];
+  let selectedModules = ["public", "admin"];
 
-  if (!projectName) {
-    const response = await prompts({
-      type: "text",
+  const response = await prompts([
+    {
+      type: projectName ? null : "text",
       name: "projectName",
       message: "What is the name of your project?",
       initial: "my-app",
@@ -25,13 +26,27 @@ const run = async () => {
         }
         return true;
       },
-    });
+    },
+    {
+      type: "multiselect",
+      name: "modules",
+      message: "Which modules do you want to include?",
+      choices: [
+        { title: "Public Pages", value: "public", selected: true },
+        { title: "Admin Dashboard", value: "admin", selected: true },
+        { title: "User Dashboard", value: "user", selected: true },
+      ],
+      min: 1,
+      instructions: false,
+    },
+  ]);
 
-    if (!response.projectName) {
-      console.log(chalk.red("\nOperation cancelled"));
-      process.exit(1);
-    }
-    projectName = response.projectName;
+  projectName = projectName || response.projectName;
+  selectedModules = response.modules || selectedModules;
+
+  if (!projectName) {
+    console.log(chalk.red("\nOperation cancelled"));
+    process.exit(1);
   }
 
   const isCurrentDir = projectName === ".";
@@ -43,28 +58,33 @@ const run = async () => {
   // Validation
   if (!isCurrentDir && existsSync(projectPath)) {
     if (readdirSync(projectPath).length > 0) {
-        const { overwrite } = await prompts({
-            type: 'confirm',
-            name: 'overwrite',
-            message: `Target directory "${appName}" is not empty. Remove existing files and continue?`,
-        });
+      const { overwrite } = await prompts({
+        type: "confirm",
+        name: "overwrite",
+        message: `Target directory "${appName}" is not empty. Remove existing files and continue?`,
+      });
 
-        if (!overwrite) {
-            console.log(chalk.red('Operation cancelled'));
-            process.exit(1);
-        }
-        rmSync(projectPath, { recursive: true, force: true });
+      if (!overwrite) {
+        console.log(chalk.red("Operation cancelled"));
+        process.exit(1);
+      }
+      rmSync(projectPath, { recursive: true, force: true });
     }
   }
 
-  console.log(chalk.blue(`\nCreating a new React app in ${chalk.bold(projectPath)}...`));
+  console.log(
+    chalk.blue(`\nCreating a new React app in ${chalk.bold(projectPath)}...`)
+  );
 
   // Download template using giget
   try {
-    await downloadTemplate("github:naim0018/starter-template-react-typescript", {
-      dir: projectPath,
-      force: true,
-    });
+    await downloadTemplate(
+      "github:mdkazinaim/starter-template-react-typescript",
+      {
+        dir: projectPath,
+        force: true,
+      }
+    );
   } catch (error) {
     console.error(chalk.red("Failed to download template:"), error.message);
     process.exit(1);
@@ -73,32 +93,119 @@ const run = async () => {
   console.log(chalk.green("Template downloaded successfully."));
 
   // Cleanup & Configuration
-  console.log(chalk.blue("Configuring project..."));
+  console.log(chalk.blue("Configuring project modules..."));
 
+  // 1. Module Pruning Logic
+  const routesPath = resolve(projectPath, "src/routes/Routes.tsx");
+  if (existsSync(routesPath)) {
+    let routesContent = readFileSync(routesPath, "utf-8");
+
+    // Admin Pruning
+    if (!selectedModules.includes("admin")) {
+      console.log(chalk.yellow("- Removing Admin module..."));
+      rmSync(resolve(projectPath, "src/pages/Admin"), {
+        recursive: true,
+        force: true,
+      });
+      rmSync(resolve(projectPath, "src/routes/AdminRoutes.tsx"), {
+        force: true,
+      });
+      routesContent = routesContent.replace(
+        /\/\/ \[ADMIN_MODULE_START\][\s\S]*?\/\/ \[ADMIN_MODULE_END\]/g,
+        ""
+      );
+      routesContent = routesContent.replace(
+        /\/\/ \[ADMIN_ROUTES_START\][\s\S]*?\/\/ \[ADMIN_ROUTES_END\]/g,
+        ""
+      );
+    }
+
+    // User Pruning
+    if (!selectedModules.includes("user")) {
+      console.log(chalk.yellow("- Removing User module..."));
+      rmSync(resolve(projectPath, "src/pages/UserDashboard"), {
+        recursive: true,
+        force: true,
+      });
+      rmSync(resolve(projectPath, "src/routes/UserRoutes.tsx"), {
+        force: true,
+      });
+      routesContent = routesContent.replace(
+        /\/\/ \[USER_MODULE_START\][\s\S]*?\/\/ \[USER_MODULE_END\]/g,
+        ""
+      );
+      routesContent = routesContent.replace(
+        /\/\/ \[USER_ROUTES_START\][\s\S]*?\/\/ \[USER_ROUTES_END\]/g,
+        ""
+      );
+    }
+
+    // Public Pruning (Refined)
+    if (!selectedModules.includes("public")) {
+      console.log(chalk.yellow("- Removing Public module..."));
+      rmSync(resolve(projectPath, "src/pages/Public"), {
+        recursive: true,
+        force: true,
+      });
+      rmSync(resolve(projectPath, "src/routes/PublicRoutes.tsx"), {
+        force: true,
+      });
+      routesContent = routesContent.replace(
+        /\/\/ \[PUBLIC_MODULE_START\][\s\S]*?\/\/ \[PUBLIC_MODULE_END\]/g,
+        ""
+      );
+
+      // Only remove the specific routes generator, keeping the / layout for Auth
+      routesContent = routesContent.replace(
+        /\/\/ \[PUBLIC_ROUTES_START\][\s\S]*?\/\/ \[PUBLIC_ROUTES_END\]/g,
+        ""
+      );
+
+      // If Public is unselected, but others exist, we should redirect / to a dashboard
+      if (selectedModules.includes("admin") || selectedModules.includes("user")) {
+        const target = selectedModules.includes("admin") ? "/admin" : "/user";
+        // Update the default redirect if root children are now only Auth
+        routesContent = routesContent.replace(
+            /path: "\/",\n\s*element: \([\s\S]*?\),\n\s*children: \[/,
+            `path: "/",\n    element: (\n      <Suspense fallback={<div>Loading...</div>}>\n        <App />\n      </Suspense>\n    ),\n    children: [\n      { index: true, element: <Navigate to="${target}" replace /> },`
+        );
+        if (!routesContent.includes("Navigate")) {
+          routesContent = routesContent.replace(
+            /import { createBrowserRouter }/,
+            "import { createBrowserRouter, Navigate }"
+          );
+        }
+      }
+    }
+
+    writeFileSync(routesPath, routesContent);
+  }
+
+  // 2. Package.json Cleanup
   const packageJsonPath = resolve(projectPath, "package.json");
   const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
-  // Cleanup: Remove library-specific fields
   delete packageJson.bin;
   delete packageJson.files;
   delete packageJson.repository;
   delete packageJson.bugs;
   delete packageJson.homepage;
-  
-  // Cleanup: Remove CLI dependencies (so the user project doesn't have them)
+
   const cliDeps = ["giget", "prompts", "chalk", "validate-npm-package-name"];
-  cliDeps.forEach(dep => {
-      if (packageJson.dependencies && packageJson.dependencies[dep]) delete packageJson.dependencies[dep];
-      if (packageJson.devDependencies && packageJson.devDependencies[dep]) delete packageJson.devDependencies[dep];
+  cliDeps.forEach((dep) => {
+    if (packageJson.dependencies && packageJson.dependencies[dep])
+      delete packageJson.dependencies[dep];
+    if (packageJson.devDependencies && packageJson.devDependencies[dep])
+      delete packageJson.devDependencies[dep];
   });
 
   packageJson.name = appName;
   packageJson.version = "0.1.0";
-  packageJson.description = ""; // Reset description
+  packageJson.description = "";
 
   writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-  // Remove bin folder
+  // 3. Remove CLI-specific folders
   const binPath = resolve(projectPath, "bin");
   if (existsSync(binPath)) {
     rmSync(binPath, { recursive: true, force: true });
@@ -106,21 +213,17 @@ const run = async () => {
 
   // Install dependencies
   console.log(chalk.blue("Installing dependencies..."));
-  
-  const installResult = spawnSync('npm', ['install'], { 
-    cwd: projectPath, 
-    stdio: 'inherit',
-    shell: true
+
+  const installResult = spawnSync("npm", ["install"], {
+    cwd: projectPath,
+    stdio: "inherit",
+    shell: true,
   });
 
   if (installResult.status !== 0) {
-      console.error(chalk.red("Failed to install dependencies."));
-      if (installResult.error) {
-        console.error(chalk.red(installResult.error.message));
-      }
-      // We don't exit here, just warn, so the user sees the output.
+    console.error(chalk.red("Failed to install dependencies."));
   } else {
-      console.log(chalk.green("Dependencies installed successfully."));
+    console.log(chalk.green("Dependencies installed successfully."));
   }
 
   // Success Message
