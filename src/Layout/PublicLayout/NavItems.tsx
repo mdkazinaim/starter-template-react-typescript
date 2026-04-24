@@ -64,7 +64,7 @@ const NavItems = ({
 
               {/* Dropdown */}
               {item.children && item.children.length > 0 && (
-                <ul className="absolute left-0 top-full hidden min-w-[200px] rounded-lg bg-website-color-green shadow-lg group-hover:block">
+                <ul className="absolute left-0 top-full hidden min-w-[200px] rounded-lg bg-primary-brand shadow-lg group-hover:block">
                   {item.children.map((child) => {
                     const childActive =
                       child.path &&
@@ -75,9 +75,9 @@ const NavItems = ({
                       <li key={child.path}>
                         <Link
                           to={child.path || "#"}
-                          className={`block px-5 py-2 text-center text-white hover:bg-website-color-lightGreen no-underline ${
+                          className={`block px-5 py-2 text-center text-white no-underline rounded-b-lg ${
                             childActive
-                              ? "bg-website-color-lightGreen border-b-2 font-semibold"
+                              ? "bg-secondary-brand border-b-2 font-semibold"
                               : ""
                           } ${classNameC}`}
                         >
