@@ -35,9 +35,9 @@ export const DatePicker = ({
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start h-11 px-4 bg-gray-50/50 border-gray-200 font-normal hover:bg-gray-50 transition-all text-left rounded-lg",
+            "w-full justify-start h-11 px-4 bg-light-background border-border font-normal hover:bg-light-background/80 transition-all text-left rounded-lg text-primary-text",
             error && "border-red-500",
-            !value && "text-muted-foreground",
+            !value && "text-secondary-text",
             className
           )}
         >
@@ -46,7 +46,7 @@ export const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="p-0 bg-white shadow-2xl border-gray-200 rounded-lg overflow-hidden" 
+        className="p-0 bg-primary-background shadow-2xl border-border rounded-lg overflow-hidden" 
         align="start"
         style={{ width: 'var(--radix-popover-trigger-width)' }}
       >
@@ -102,9 +102,9 @@ export const DateTimePicker = ({
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-start h-11 px-4 bg-gray-50/50 border-gray-200 font-normal hover:bg-gray-50 transition-all text-left rounded-lg",
+            "w-full justify-start h-11 px-4 bg-light-background border-border font-normal hover:bg-light-background/80 transition-all text-left rounded-lg text-primary-text",
             error && "border-red-500",
-            !value && "text-muted-foreground",
+            !value && "text-secondary-text",
             className
           )}
         >
@@ -113,7 +113,7 @@ export const DateTimePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="p-0 bg-white shadow-2xl border-gray-200 rounded-lg overflow-hidden" 
+        className="p-0 bg-primary-background shadow-2xl border-border rounded-lg overflow-hidden" 
         align="start"
         style={{ width: 'var(--radix-popover-trigger-width)' }}
       >
@@ -131,13 +131,13 @@ export const DateTimePicker = ({
               className="border-none font-inter w-full"
             />
           </div>
-          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-            <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Select Time</Label>
+          <div className="flex items-center justify-between pt-3 border-t border-border">
+            <Label className="text-xs font-bold text-secondary-text uppercase tracking-wider">Select Time</Label>
             <input
               type="time"
               value={timeValue}
               onChange={handleTimeChange}
-              className="h-9 px-3 rounded-lg border border-gray-200 bg-gray-50 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-primary-brand/10"
+              className="h-9 px-3 rounded-lg border border-border bg-light-background text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-primary-brand/10 text-primary-text"
             />
           </div>
           <Button className="w-full h-10 font-semibold rounded-lg" onClick={() => setOpen(false)}>Done</Button>

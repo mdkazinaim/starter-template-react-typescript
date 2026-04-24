@@ -105,8 +105,8 @@ const UserRegistrationExample = () => {
   };
 
   return (
-    <div className=" mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-dark-blue">
+    <div className=" mx-auto p-8 bg-primary-background rounded-lg shadow-sm border border-border">
+      <h2 className="text-2xl font-bold mb-6 text-primary-text">
         User Registration
       </h2>
       <CommonForm
@@ -118,9 +118,9 @@ const UserRegistrationExample = () => {
         layout="vertical"
       />
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
-          <h3 className="font-semibold mb-3">Submitted Data:</h3>
-          <pre className="text-sm overflow-auto text-gray-700">
+        <div className="mt-8 p-6 bg-light-background rounded-lg border border-border">
+          <h3 className="font-semibold mb-3 text-primary-text">Submitted Data:</h3>
+          <pre className="text-sm overflow-auto text-secondary-text">
             {JSON.stringify(formData, null, 2)}
           </pre>
         </div>
@@ -256,8 +256,8 @@ const JobApplicationExample = () => {
   };
 
   return (
-    <div className=" mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-dark-blue">
+    <div className=" mx-auto p-8 bg-primary-background rounded-lg shadow-sm border border-border">
+      <h2 className="text-2xl font-bold mb-6 text-primary-text">
         Job Application
       </h2>
       <CommonForm
@@ -271,8 +271,8 @@ const JobApplicationExample = () => {
       />
       {!!formData && (
         <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
-          <h3 className="font-semibold mb-3">Submitted Data:</h3>
-          <pre className="text-sm overflow-auto max-h-96 text-gray-700">
+          <h3 className="font-semibold mb-3 text-primary-text">Submitted Data:</h3>
+          <pre className="text-sm overflow-auto max-h-96 text-secondary-text">
             {JSON.stringify(formData, null, 2)}
           </pre>
         </div>
@@ -371,11 +371,11 @@ const ConditionalFieldsExample = () => {
   };
 
   return (
-    <div className=" mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-dark-blue">
+    <div className=" mx-auto p-8 bg-primary-background rounded-lg shadow-sm border border-border">
+      <h2 className="text-2xl font-bold mb-6 text-primary-text">
         Conditional Fields Example
       </h2>
-      <p className="text-gray-600 mb-4">
+      <p className="text-secondary-text mb-4">
         Fields will appear/disappear based on your selections
       </p>
       <CommonForm
@@ -386,9 +386,9 @@ const ConditionalFieldsExample = () => {
         showResetButton
       />
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
-          <h3 className="font-semibold mb-3">Submitted Data:</h3>
-          <pre className="text-sm overflow-auto text-gray-700">
+        <div className="mt-8 p-6 bg-light-background rounded-lg border border-border">
+          <h3 className="font-semibold mb-3 text-primary-text">Submitted Data:</h3>
+          <pre className="text-sm overflow-auto text-secondary-text">
             {JSON.stringify(formData, null, 2)}
           </pre>
         </div>
@@ -551,33 +551,33 @@ const AllFieldTypesExample = () => {
   };
 
   return (
-    <div className="w-full  mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
+    <div className="w-full  mx-auto p-8 bg-primary-background rounded-lg shadow-sm border border-border">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-dark-blue">
+          <h2 className="text-2xl font-bold text-primary-text">
             Layout Playground
           </h2>
-          <p className="text-gray-600">
+          <p className="text-secondary-text">
             Interactive demo of supported field types and layout options
           </p>
         </div>
 
         {/* Layout Controls */}
-        <div className="flex flex-wrap items-center gap-3 bg-gray-50 p-2 rounded-lg border border-border">
-          <span className="text-sm font-medium text-gray-600 pl-2">
+        <div className="flex flex-wrap items-center gap-3 bg-light-background p-2 rounded-lg border border-border">
+          <span className="text-sm font-medium text-secondary-text pl-2">
             Layout:
           </span>
           <button
             onClick={() => setLayout("vertical")}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "vertical"
-                ? "bg-white text-primary-blue shadow-sm border border-gray-200"
-                : "text-gray-600 hover:bg-gray-200"
+                ? "bg-primary-background text-primary-brand shadow-sm border border-border"
+                : "text-secondary-text hover:bg-primary-background/50"
             }`}
           >
             Vertical
           </button>
-          <div className="w-px h-4 bg-gray-300 mx-1"></div>
+          <div className="w-px h-4 bg-border mx-1"></div>
           <button
             onClick={() => {
               setLayout("grid");
@@ -585,8 +585,8 @@ const AllFieldTypesExample = () => {
             }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "grid" && gridCols === 2
-                ? "bg-white text-primary-blue shadow-sm border border-gray-200"
-                : "text-gray-600 hover:bg-gray-200"
+                ? "bg-primary-background text-primary-brand shadow-sm border border-border"
+                : "text-secondary-text hover:bg-primary-background/50"
             }`}
           >
             Grid (2 Col)
@@ -598,8 +598,8 @@ const AllFieldTypesExample = () => {
             }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "grid" && gridCols === 3
-                ? "bg-white text-primary-blue shadow-sm border border-gray-200"
-                : "text-gray-600 hover:bg-gray-200"
+                ? "bg-primary-background text-primary-brand shadow-sm border border-border"
+                : "text-secondary-text hover:bg-primary-background/50"
             }`}
           >
             Grid (3 Col)
@@ -611,8 +611,8 @@ const AllFieldTypesExample = () => {
             }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "grid" && gridCols === 4
-                ? "bg-white text-primary-blue shadow-sm border border-gray-200"
-                : "text-gray-600 hover:bg-gray-200"
+                ? "bg-primary-background text-primary-brand shadow-sm border border-border"
+                : "text-secondary-text hover:bg-primary-background/50"
             }`}
           >
             Grid (4 Col)
@@ -631,9 +631,9 @@ const AllFieldTypesExample = () => {
       />
 
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
-          <h3 className="font-semibold mb-3">Submitted Data:</h3>
-          <pre className="text-sm overflow-auto max-h-96 text-gray-700">
+        <div className="mt-8 p-6 bg-light-background rounded-lg border border-border">
+          <h3 className="font-semibold mb-3 text-primary-text">Submitted Data:</h3>
+          <pre className="text-sm overflow-auto max-h-96 text-secondary-text">
             {JSON.stringify(formData, null, 2)}
           </pre>
         </div>
@@ -676,10 +676,10 @@ const FormExamples = () => {
     <div className="min-h-screen w-full py-8">
       <div className="w-full mx-auto px-4">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-primary-text mb-2">
             Enhanced CommonForm Examples
           </h1>
-          <p className="text-gray-600">
+          <p className="text-secondary-text">
             Comprehensive form component supporting 21 field types with
             validation
           </p>
@@ -693,8 +693,8 @@ const FormExamples = () => {
               onClick={() => setActiveExample(example.id)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeExample === example.id
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
+                  ? "bg-secondary-brand text-white"
+                  : "bg-primary-background text-secondary-text hover:bg-light-background"
               }`}
             >
               {example.label}

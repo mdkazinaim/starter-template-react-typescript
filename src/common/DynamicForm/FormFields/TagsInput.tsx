@@ -22,7 +22,7 @@ const TagsInput = ({
   allowCustom = true,
   disabled = false,
   className = "",
-  tagColor = "bg-blue-100 text-blue-800",
+  tagColor = "bg-primary-brand/10 text-primary-text border border-primary-brand/20",
 }: TagsInputProps) => {
   const [inputValue, setInputValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -93,10 +93,10 @@ const TagsInput = ({
   return (
     <div className={`relative ${className}`}>
       <div
-        className={`flex flex-wrap gap-2 p-2.5 border border-gray-200 rounded-lg min-h-[44px] transition-all duration-200 ${
+        className={`flex flex-wrap gap-2 p-2.5 border border-border rounded-lg min-h-[44px] transition-all duration-200 ${
           disabled
-            ? "bg-gray-100/50 cursor-not-allowed"
-            : "bg-gray-50/50 hover:bg-gray-50 focus-within:bg-white focus-within:border-primary-brand/50 focus-within:ring-4 focus-within:ring-primary-brand/10"
+            ? "bg-light-background/50 cursor-not-allowed"
+            : "bg-light-background hover:bg-light-background/80 focus-within:bg-primary-background focus-within:border-primary-brand/50 focus-within:ring-4 focus-within:ring-primary-brand/10"
         }`}
         onClick={() => inputRef.current?.focus()}
       >
@@ -130,19 +130,19 @@ const TagsInput = ({
           disabled={
             disabled || (maxTags !== undefined && value.length >= maxTags)
           }
-          className="flex-1 min-w-[120px] outline-none bg-transparent disabled:cursor-not-allowed"
+          className="flex-1 min-w-[120px] outline-none bg-transparent disabled:cursor-not-allowed text-primary-text placeholder:text-secondary-text"
         />
       </div>
 
       {/* Suggestions Dropdown */}
       {showSuggestions && filteredSuggestions.length > 0 && (
-        <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+        <div className="absolute z-10 w-full mt-1 bg-primary-background border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
           {filteredSuggestions.map((suggestion) => (
             <button
               key={suggestion}
               type="button"
               onClick={() => addTag(suggestion)}
-              className="w-full px-3 py-2 text-left hover:bg-gray-100 transition-colors"
+              className="w-full px-3 py-2 text-left hover:bg-light-background transition-colors text-primary-text"
             >
               {suggestion}
             </button>
@@ -152,7 +152,7 @@ const TagsInput = ({
 
       {/* Helper Text */}
       {maxTags && (
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-secondary-text mt-1">
           {value.length}/{maxTags} tags
         </p>
       )}

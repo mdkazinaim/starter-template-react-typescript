@@ -47,14 +47,14 @@ const Pagination = ({
   if (totalItems === 0) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-gray-100 bg-white">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-border bg-primary-background">
       {/* Showing X-Y of Z */}
-      <div className="text-[14px] font-medium text-gray-500">
+      <div className="text-[14px] font-medium text-secondary-text">
         Showing{" "}
-        <span className="text-gray-700 font-semibold">
+        <span className="text-primary-text font-semibold">
           {startItem}-{endItem}
         </span>{" "}
-        of <span className="text-gray-700 font-semibold">{totalItems}</span>{" "}
+        of <span className="text-primary-text font-semibold">{totalItems}</span>{" "}
         {label}
       </div>
 
@@ -65,7 +65,7 @@ const Pagination = ({
           <button
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-border rounded-lg text-secondary-text hover:bg-light-background disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronLeft size={16} />
             Prev
@@ -77,7 +77,7 @@ const Pagination = ({
               btn === "..." ? (
                 <span
                   key={idx}
-                  className="w-9 text-center text-gray-300 font-bold"
+                  className="w-9 text-center text-secondary-text/40 font-bold"
                 >
                   ...
                 </span>
@@ -89,7 +89,7 @@ const Pagination = ({
                     "w-9 h-9 flex items-center justify-center text-sm font-bold rounded-lg transition-all",
                     currentPage === btn
                       ? "bg-primary-brand text-white shadow-sm shadow-primary-brand/20"
-                      : "text-gray-500 hover:bg-gray-50 border border-gray-200 hover:border-gray-200",
+                      : "text-secondary-text hover:bg-light-background border border-border hover:border-border",
                   )}
                 >
                   {btn}
@@ -102,7 +102,7 @@ const Pagination = ({
           <button
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-border rounded-lg text-secondary-text hover:bg-light-background disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             Next
             <ChevronRight size={16} />

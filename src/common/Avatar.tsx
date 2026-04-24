@@ -25,9 +25,9 @@ export const Avatar = ({ src, name, size = "lg", className }: AvatarProps) => {
   return (
     <div
       className={cn(
-        "relative flex shrink-0 overflow-hidden rounded-full border-2 border-gray-300 shadow-sm items-center justify-center font-bold transition-all duration-200",
+        "relative flex shrink-0 overflow-hidden rounded-full border-2 border-border shadow-sm items-center justify-center font-bold transition-all duration-200",
         sizeClasses[size],
-        src ? "bg-gray-100" : "bg-gray-100 text-primary-text",
+        src ? "bg-light-background" : "bg-light-background text-primary-text",
         className,
       )}
     >
@@ -64,7 +64,7 @@ export const AvatarStack = ({
             src={user.src}
             name={user.name}
             size={size}
-            className="ring-2 ring-white hover:z-10 hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer"
+            className="ring-2 ring-primary-background hover:z-10 hover:-translate-y-0.5 transition-transform duration-200 cursor-pointer"
           />
         </Tooltip>
       ))}
@@ -73,7 +73,7 @@ export const AvatarStack = ({
           <Avatar
             name={`+${remaining}`}
             size={size}
-            className="bg-slate-200 border-blue-200 text-blue-600 ring-2 ring-white z-0"
+            className="bg-secondary-brand/10 border-secondary-brand/20 text-secondary-brand ring-2 ring-primary-background z-0"
           />
         </Tooltip>
       )}

@@ -197,7 +197,7 @@ const CommonForm = <T extends Record<string, unknown>>({
                 }
                 placeholder={field.placeholder}
                 className={cn(
-                  "h-11 bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg",
+                  "h-11 bg-light-background border-border focus:bg-primary-background focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg text-primary-text placeholder:text-secondary-text",
                   error && "border-red-500 focus:ring-primary-brand/10",
                 )}
                 {...register(field.name as Path<T>)}
@@ -243,7 +243,7 @@ const CommonForm = <T extends Record<string, unknown>>({
               id={field.name}
               placeholder={field.placeholder}
               className={cn(
-                "min-h-[120px] bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg resize-none",
+                "min-h-[120px] bg-light-background border-border focus:bg-primary-background focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg resize-none text-primary-text placeholder:text-secondary-text",
                 error && "border-red-500 focus:ring-primary-brand/10",
               )}
               {...register(field.name as Path<T>)}
@@ -500,7 +500,7 @@ const CommonForm = <T extends Record<string, unknown>>({
                 id={field.name}
                 type="time"
                 className={cn(
-                  "h-11 bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg cursor-pointer",
+                  "h-11 bg-light-background border-border focus:bg-primary-background focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg cursor-pointer text-primary-text",
                   error && "border-red-500 focus:ring-primary-brand/10",
                 )}
                 {...register(field.name as Path<T>)}
@@ -594,7 +594,7 @@ const CommonForm = <T extends Record<string, unknown>>({
     <form
       onSubmit={handleSubmit(onSubmitForm)}
       className={cn(
-        "bg-white p-8 shadow-sm border border-gray-200 rounded-lg space-y-8",
+        "bg-primary-background p-8 shadow-sm border border-border rounded-lg space-y-8",
         className,
       )}
     >
@@ -609,14 +609,14 @@ const CommonForm = <T extends Record<string, unknown>>({
         {fields.map((field) => renderField(field))}
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-gray-100 justify-end">
+      <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-border justify-end">
         {showResetButton && (
           <Button
             type="button"
             variant="outline"
             onClick={() => reset(formDefaultValues as DefaultValues<T>)}
             disabled={loading || isSubmitting}
-            className="px-8 h-11 rounded-lg font-semibold border-gray-200 hover:bg-gray-50 transition-all active:scale-[0.98]"
+            className="px-8 h-11 rounded-lg font-semibold border-border hover:bg-light-background transition-all active:scale-[0.98] text-primary-text"
           >
             {resetButtonText}
           </Button>
@@ -633,10 +633,12 @@ const CommonForm = <T extends Record<string, unknown>>({
 
       <style>{`
         .custom-calendar-wrapper .react-calendar {
-          background: white;
-          border: none;
+          background: var(--primary-background);
+          color: var(--primary-text);
+          border: 1px solid var(--border-color);
           font-family: inherit;
           width: 100% !important;
+          border-radius: 8px;
         }
         .custom-calendar-wrapper .react-calendar__navigation {
           display: flex;
@@ -648,11 +650,11 @@ const CommonForm = <T extends Record<string, unknown>>({
           background: none;
           font-size: 16px;
           margin-top: 4px;
-          color: #374151;
+          color: var(--primary-text);
         }
         .custom-calendar-wrapper .react-calendar__navigation button:enabled:hover,
         .custom-calendar-wrapper .react-calendar__navigation button:enabled:focus {
-          background-color: #f3f4f6;
+          background-color: var(--light-background);
           border-radius: 8px;
         }
         .custom-calendar-wrapper .react-calendar__month-view__weekdays {
@@ -660,7 +662,7 @@ const CommonForm = <T extends Record<string, unknown>>({
           text-transform: uppercase;
           font-weight: 700;
           font-size: 11px;
-          color: #9ca3af;
+          color: var(--secondary-text);
           padding-bottom: 8px;
         }
         .custom-calendar-wrapper .react-calendar__month-view__weekdays__weekday abbr {
@@ -674,26 +676,26 @@ const CommonForm = <T extends Record<string, unknown>>({
           line-height: 16px;
           font-size: 13px;
           font-weight: 500;
-          color: #4b5563;
+          color: var(--primary-text);
           border-radius: 8px;
         }
         .custom-calendar-wrapper .react-calendar__tile:enabled:hover,
         .custom-calendar-wrapper .react-calendar__tile:enabled:focus {
-          background-color: #eff6ff;
-          color: #3b82f6;
+          background-color: var(--secondary-brand);
+          color: white;
         }
         .custom-calendar-wrapper .react-calendar__tile--now {
-          background: #f3f4f6;
-          color: #111827;
+          background: var(--light-background);
+          color: var(--secondary-brand);
           font-weight: bold;
         }
         .custom-calendar-wrapper .react-calendar__tile--active {
-          background: #3b82f6 !important;
+          background: var(--secondary-brand) !important;
           color: white !important;
         }
         .custom-calendar-wrapper .react-calendar__tile--selectRange {
-          background: #eff6ff;
-          color: #3b82f6;
+          background: var(--secondary-brand);
+          color: white;
           border-radius: 0;
         }
         .custom-calendar-wrapper .react-calendar__tile--rangeStart {

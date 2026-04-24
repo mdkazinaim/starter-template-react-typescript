@@ -4,6 +4,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { logOut } from "@/store/features/AuthSlice/authSlice";
 import UserProfile from "@/common/UserProfile";
 import NavItems from "./NavItems";
+import { ThemeToggle } from "@/common/ThemeToggle";
 
 import CommonWrapper from "@/common/CommonWrapper";
 
@@ -32,6 +33,9 @@ const Navbar: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             <NavItems />
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {/* User Profile Dropdown */}
             <UserProfile />
@@ -76,6 +80,11 @@ const Navbar: React.FC = () => {
             classNameNC="block px-3 py-2 rounded-md hover:bg-website-color-lightGreen"
             classNameC="block px-3 py-2 rounded-md hover:bg-website-color-lightGreen"
           />
+
+          <div className="flex items-center justify-between px-3 py-2 border-t border-white/10">
+            <span className="text-white text-sm">Theme Mode</span>
+            <ThemeToggle />
+          </div>
 
           <button
             onClick={handleLogout}

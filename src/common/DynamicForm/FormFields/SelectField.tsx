@@ -48,9 +48,9 @@ export const SelectField = ({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-full justify-between h-11 px-4 bg-gray-50/50 border-gray-200 font-normal hover:bg-gray-50 transition-all rounded-lg",
+            "w-full justify-between h-11 px-4 bg-light-background border-border font-normal hover:bg-light-background/80 transition-all rounded-lg text-primary-text",
             error && "border-red-500",
-            !value && "text-muted-foreground",
+            !value && "text-secondary-text",
             className
           )}
         >
@@ -59,14 +59,14 @@ export const SelectField = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="p-0 shadow-xl border-gray-200 bg-white rounded-lg overflow-hidden" 
+        className="p-0 shadow-xl border-border bg-primary-background rounded-lg overflow-hidden" 
         align="start"
         style={{ width: 'var(--radix-popover-trigger-width)' }}
       >
-        <div className="flex items-center border-b border-gray-200 px-3 h-10">
+        <div className="flex items-center border-b border-border px-3 h-10">
           <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
           <input
-            className="flex h-full w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-full w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-secondary-text text-primary-text disabled:cursor-not-allowed disabled:opacity-50"
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -74,7 +74,7 @@ export const SelectField = ({
         </div>
         <div className="max-h-60 overflow-y-auto p-1 space-y-1">
           {filteredOptions.length === 0 && (
-            <div className="py-6 text-center text-sm text-muted-foreground">
+            <div className="py-6 text-center text-sm text-secondary-text">
               No results found.
             </div>
           )}

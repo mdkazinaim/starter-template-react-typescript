@@ -323,10 +323,12 @@ const DynamicTable = <T extends Record<string, unknown>>({
   // 🎨 Render
   // ============================================
   return (
-    <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="w-full bg-primary-background rounded-xl shadow-sm border border-border overflow-hidden">
       {/* Table Header / Toolbar */}
-      <div className="px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-50">
-        {title && <h2 className="text-xl font-bold text-gray-900">{title}</h2>}
+      <div className="px-6 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border">
+        {title && (
+          <h2 className="text-xl font-bold text-primary-text">{title}</h2>
+        )}
 
         <div className="flex items-center gap-3 ml-auto">
           {searchable && (
@@ -340,12 +342,12 @@ const DynamicTable = <T extends Record<string, unknown>>({
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-4 focus:ring-primary-brand/10 focus:bg-white transition-all"
+                className="w-full pl-10 pr-4 py-2 bg-light-background border border-border rounded-lg text-sm focus:outline-none focus:ring-4 focus:ring-primary-brand/10 focus:bg-primary-background text-primary-text transition-all"
               />
             </div>
           )}
 
-          <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all min-w-fit">
+          <button className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-semibold text-secondary-text hover:bg-light-background transition-all min-w-fit">
             <Filter className="h-4 w-4" />
             Filter By
           </button>
@@ -354,12 +356,12 @@ const DynamicTable = <T extends Record<string, unknown>>({
 
       {/* Selected Items Toolbar */}
       {selectable && selectedRows.size > 0 && (
-        <div className="px-6 py-3 bg-primary-brand/[0.03] border-b border-gray-50 flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="px-6 py-3 bg-primary-brand/[0.03] border-b border-border flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="flex items-center gap-4">
-            <span className="text-sm font-bold text-primary-brand bg-primary-brand/10 px-3 py-1 rounded-full">
+            <span className="text-sm font-bold text-primary-brand dark:text-slate-100 bg-primary-brand/10 px-3 py-1 rounded-full border border-primary-brand/20">
               {selectedRows.size} Selected
             </span>
-            <div className="h-4 w-px bg-gray-200" />
+            <div className="h-4 w-px bg-border" />
 
             {bulkActions && (
               <div className="flex items-center gap-1">
@@ -377,10 +379,10 @@ const DynamicTable = <T extends Record<string, unknown>>({
                     className={cn(
                       "flex items-center gap-2 px-3 py-1.5 rounded-lg text-[13px] font-bold transition-all",
                       action.variant === "danger"
-                        ? "text-rose-500 hover:bg-rose-50"
+                        ? "text-rose-500 hover:bg-rose-500/10"
                         : action.variant === "primary"
                           ? "text-primary-brand hover:bg-primary-brand/5"
-                          : "text-gray-600 hover:bg-gray-100",
+                          : "text-secondary-text hover:bg-light-background",
                     )}
                   >
                     {action.icon}
@@ -395,10 +397,10 @@ const DynamicTable = <T extends Record<string, unknown>>({
 
       {/* 💻 Desktop Table View */}
       <div className="hidden md:block w-full overflow-hidden">
-        <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200">
+        <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-border">
           <table className="w-full table-auto border-collapse min-w-full">
             <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-100">
+              <tr className="bg-light-background border-b border-border">
                 {selectable && (
                   <th className="px-6 py-4 w-12 text-left">
                     <div className="flex items-center">
@@ -418,7 +420,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                   <th
                     key={column.key}
                     className={cn(
-                      "px-6 py-4 text-[13px] font-bold text-gray-500 uppercase tracking-tight whitespace-nowrap",
+                      "px-6 py-4 text-[13px] font-bold text-secondary-text uppercase tracking-tight whitespace-nowrap",
                       getAlignmentClass(column.align),
                       column.hideOnMobile ? "hidden lg:table-cell" : "",
                     )}
@@ -427,7 +429,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                     {column.sortable ? (
                       <button
                         onClick={() => handleSort(column.key)}
-                        className="group flex items-center gap-2 hover:text-gray-900 transition-colors w-full"
+                        className="group flex items-center gap-2 hover:text-primary-text transition-colors w-full"
                       >
                         {column.label}
                         <div className="flex flex-col text-gray-400 group-hover:text-primary-brand transition-colors">
@@ -461,7 +463,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="">
               {loading ? (
                 <tr>
                   <td
@@ -505,16 +507,16 @@ const DynamicTable = <T extends Record<string, unknown>>({
                     <tr
                       key={rowKey}
                       className={cn(
-                        "transition-all duration-200 border-b border-gray-50 last:border-0",
+                        "transition-all duration-200 border-b border-border last:border-0",
                         striped
                           ? index % 2 === 0
-                            ? "bg-[var(--bg-stripe-1)]"
-                            : "bg-[var(--bg-stripe-2)]"
-                          : "bg-white",
+                            ? "bg-stripe-1"
+                            : "bg-stripe-2"
+                          : "bg-primary-background",
                         hoverable &&
-                          "hover:bg-gray-50/80 hover:shadow-[inset_4px_0_0_0_#3b82f6]",
+                          "hover:bg-primary-brand/5 hover:shadow-[inset_4px_0_0_0_var(--secondary-brand)]",
                         isSelected &&
-                          "bg-primary-brand/[0.02] shadow-[inset_4px_0_0_0_#3b82f6]",
+                          "bg-primary-brand/[0.02] shadow-[inset_4px_0_0_0_var(--secondary-brand)]",
                         rowClassName?.(row, index),
                       )}
                     >
@@ -534,7 +536,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                         <td
                           key={column.key}
                           className={cn(
-                            "px-6 py-4 text-sm font-semibold text-gray-600",
+                            "px-6 py-4 text-sm font-semibold text-primary-text",
                             getAlignmentClass(column.align),
                             column.hideOnMobile ? "hidden lg:table-cell" : "",
                           )}
@@ -562,8 +564,8 @@ const DynamicTable = <T extends Record<string, unknown>>({
                                   className={cn(
                                     "p-2 rounded-lg transition-all hover:scale-110",
                                     action.variant === "danger"
-                                      ? "text-red-400 hover:bg-red-50 hover:text-red-500"
-                                      : "text-blue-400 hover:bg-blue-50 hover:text-blue-500",
+                                      ? "text-red-400 hover:bg-red-500/10 hover:text-red-500"
+                                      : "text-secondary-text hover:bg-light-background hover:text-primary-brand",
                                   )}
                                 >
                                   {action.icon}
@@ -583,9 +585,9 @@ const DynamicTable = <T extends Record<string, unknown>>({
       </div>
 
       {/* 📱 Mobile Card View */}
-      <div className="md:hidden w-full divide-y divide-gray-100">
+      <div className="md:hidden w-full divide-y divide-border">
         {selectable && paginatedData.length > 0 && (
-          <div className="px-4 py-3 bg-gray-50/50 flex items-center justify-between">
+          <div className="px-4 py-3 bg-light-background flex items-center justify-between">
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
@@ -594,9 +596,9 @@ const DynamicTable = <T extends Record<string, unknown>>({
                   selectedRows.size === paginatedData.length
                 }
                 onChange={(e) => handleSelectAll(e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer"
+                className="h-4 w-4 rounded border-border text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer bg-primary-background"
               />
-              <span className="text-sm font-bold text-gray-700">
+              <span className="text-sm font-bold text-primary-text">
                 Select All
               </span>
             </div>
@@ -617,7 +619,9 @@ const DynamicTable = <T extends Record<string, unknown>>({
           </div>
         ) : paginatedData.length === 0 ? (
           <div className="px-6 py-20 text-center">
-            <p className="text-sm font-bold text-gray-900">{emptyMessage}</p>
+            <p className="text-sm font-bold text-primary-text">
+              {emptyMessage}
+            </p>
           </div>
         ) : (
           paginatedData.map((row, index) => {
@@ -649,7 +653,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                       onChange={(e) =>
                         handleSelectRow(rowKey, e.target.checked)
                       }
-                      className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20"
+                      className="mt-1 h-4 w-4 rounded border-border text-primary-brand focus:ring-primary-brand/20 bg-primary-background"
                     />
                   )}
 
@@ -666,11 +670,11 @@ const DynamicTable = <T extends Record<string, unknown>>({
                               : "bg-transparent",
                           )}
                         >
-                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                          <span className="text-[10px] font-bold text-secondary-text/60 uppercase tracking-wider">
                             {column.label}
                           </span>
                           <Tooltip content={getTooltipText(row, column)}>
-                            <div className="text-[13px] font-semibold text-gray-700 leading-tight truncate w-full">
+                            <div className="text-[13px] font-semibold text-primary-text leading-tight truncate w-full">
                               {getCellValue(row, column)}
                             </div>
                           </Tooltip>
@@ -680,7 +684,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
 
                     {/* Expandable Content - Two Column Layout with Zebra Fields */}
                     {isExpanded && secondaryColumns.length > 0 && (
-                      <div className="grid grid-cols-1 gap-y-1 pt-3 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="grid grid-cols-1 gap-y-1 pt-3 border-t border-border animate-in fade-in slide-in-from-top-2 duration-200">
                         {secondaryColumns.map((column, colIdx) => (
                           <div
                             key={column.key}
@@ -691,14 +695,14 @@ const DynamicTable = <T extends Record<string, unknown>>({
                                 : "bg-transparent",
                             )}
                           >
-                            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
+                            <span className="text-[11px] font-bold text-secondary-text/60 uppercase tracking-wider whitespace-nowrap">
                               {column.label}
                             </span>
                             <Tooltip
                               content={getTooltipText(row, column)}
                               className="right-0 translate-x-0"
                             >
-                              <div className="text-[13px] font-bold text-gray-700 leading-tight text-right truncate max-w-[150px]">
+                              <div className="text-[13px] font-bold text-primary-text leading-tight text-right truncate max-w-[150px]">
                                 {getCellValue(row, column)}
                               </div>
                             </Tooltip>
@@ -712,7 +716,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                       className={cn(
                         "flex items-center justify-between",
                         isExpanded
-                          ? "pt-3 border-t border-gray-50 mt-1"
+                          ? "pt-3 border-t border-border mt-1"
                           : "pt-2",
                       )}
                     >
@@ -725,8 +729,8 @@ const DynamicTable = <T extends Record<string, unknown>>({
                                 className={cn(
                                   "p-1.5 rounded-sm transition-all border shadow-sm",
                                   action.variant === "danger"
-                                    ? "text-red-500 border-red-50 bg-white"
-                                    : "text-blue-500 border-blue-50 bg-white",
+                                    ? "text-red-500 border-red-500/20 bg-light-background"
+                                    : "text-blue-500 border-blue-500/20 bg-light-background",
                                 )}
                               >
                                 <div className="scale-90">{action.icon}</div>

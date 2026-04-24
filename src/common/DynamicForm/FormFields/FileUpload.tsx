@@ -94,7 +94,7 @@ export const FileUpload = ({
         className={cn(
           "relative border-2 border-dashed rounded-xl p-8 transition-all duration-200 group cursor-pointer",
           "hover:border-primary-brand/50 hover:bg-primary-brand/5",
-          error ? "border-red-500 bg-red-50" : "border-gray-200 bg-gray-50/50"
+          error ? "border-red-500 bg-red-500/10" : "border-border bg-light-background"
         )}
       >
         <input
@@ -105,12 +105,12 @@ export const FileUpload = ({
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
         />
         <div className="flex flex-col items-center justify-center space-y-3 pointer-events-none">
-          <div className="p-3 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">
+          <div className="p-3 bg-primary-background rounded-full shadow-sm group-hover:scale-110 transition-transform border border-border">
             <Upload className="h-6 w-6 text-primary-text" />
           </div>
           <div className="text-center">
-            <p className="text-sm font-bold text-gray-700">Click or drag to upload</p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-sm font-bold text-primary-text">Click or drag to upload</p>
+            <p className="text-xs text-secondary-text mt-1">
               {accept ? `Supports: ${accept}` : "All file types supported"}
             </p>
           </div>
@@ -120,10 +120,10 @@ export const FileUpload = ({
       {previews.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {previews.map((preview, idx) => (
-            <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-100 group">
+            <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-border group">
               {preview === "file" ? (
-                <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                  <FileIcon className="h-8 w-8 text-gray-400" />
+                <div className="w-full h-full bg-light-background flex items-center justify-center">
+                  <FileIcon className="h-8 w-8 text-secondary-text" />
                 </div>
               ) : (
                 <img src={preview} alt="preview" className="w-full h-full object-cover" />

@@ -12,7 +12,7 @@
    🌈 Root Design Tokens
 ========================== */
 :root {
-  /* --- Colors --- */
+  /* --- Light Mode (Default) --- */
   --primary-background: #ffffff;
   --light-background: #f1f5f9;
   --primary-brand: #161e49;
@@ -35,6 +35,23 @@
   --popover-foreground: 222.2 84% 4.9%;
 }
 
+.dark {
+  /* --- Dark Mode Palette --- */
+  --primary-background: #020617;
+  --light-background: #0f172a;
+  --primary-brand: #1e293b;
+  --secondary-brand: #3b82f6;
+  --primary-text: #f8fafc;
+  --secondary-text: #94a3b8;
+  
+  --border-color: #1e293b;
+  --bg-stripe-1: #0f172a;
+  --bg-stripe-2: #020617;
+
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+}
+
 /* =======================
    🎨 Tailwind Theme Configuration
 ========================== */
@@ -52,6 +69,8 @@
   --color-light-green: var(--light-green);
   --color-primary-red: var(--primary-red);
   --color-primary-yellow: var(--primary-yellow);
+  --color-stripe-1: var(--bg-stripe-1);
+  --color-stripe-2: var(--bg-stripe-2);
   
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));

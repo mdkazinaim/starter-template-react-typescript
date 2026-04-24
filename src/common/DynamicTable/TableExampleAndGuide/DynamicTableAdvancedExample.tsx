@@ -283,7 +283,7 @@ const AdvancedTableExample = () => {
       width: "120px",
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gray-50 rounded-lg group-hover:scale-110 transition-transform">
+          <div className="p-2 bg-light-background rounded-lg group-hover:scale-110 transition-transform border border-border">
             {getFileIcon(row.name)}
           </div>
           <span className="truncate max-w-[220px]">{row.name}</span>
@@ -303,7 +303,7 @@ const AdvancedTableExample = () => {
       render: (row) => (
         <div className="flex items-center gap-2">
           <Avatar src={row.addedBy.avatar} name={row.addedBy.name} size="md" />
-          <span className="text-gray-900">{row.addedBy.name}</span>
+          <span className="text-primary-text">{row.addedBy.name}</span>
         </div>
       ),
     },
