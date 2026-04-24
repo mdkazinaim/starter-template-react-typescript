@@ -1,54 +1,75 @@
-# React + TypeScript Starter Template (RST)
+# React Starter Template (RST) 🚀
 
-A premium, production-ready starter template for React applications. Packed with modern tools like Vite, TypeScript, Tailwind CSS v4, Redux Toolkit, and Framer Motion.
+> [!IMPORTANT]
+> **RST** is a premium, production-ready React starter kit designed for performance, scalability, and a superior developer experience.
 
-## 🚀 Quick Start
+A modern, full-stack-ready frontend boilerplate built with **React 19**, **Vite 6**, and **Tailwind CSS v4**. It features a modular architecture with pre-built modules for Public pages, Admin dashboards, and User dashboards.
 
-Initialize a new project instantly using `npx`:
+---
+
+## 🚀 Getting Started
+
+The recommended way to start a new project is using our interactive CLI. It allows you to customize your template by selecting only the modules you need.
+
+### 1. Initialize Project
+
+Run the following command in your terminal:
 
 ```bash
-# Using npx
-npx create-rst my-new-app
-
-# OR using npm init
-npm create rst my-new-app
+npx create-rst my-awesome-app
 ```
 
-Or install globally:
+### 2. Follow the Interactive Prompts
+
+The CLI will guide you through:
+1. **Naming** your project.
+2. **Selecting Modules**:
+   - `Full Template`: (Public + Admin + User)
+   - `Public + Admin Dashboard`
+   - `Admin + User Dashboard`
+   - `Public Pages Only`
+   - `Admin Dashboard Only`
+
+### 3. Start Developing
 
 ```bash
-npm install -g create-rst
-create-rst my-new-app
-```
-
-Then navigate to your project and start coding:
-
-```bash
-cd my-new-app
+cd my-awesome-app
 npm run dev
 ```
 
-
+---
 
 ## ✨ Features
 
--   **⚡ Vite**: Lightning fast build tool.
--   **📘 TypeScript**: Type safety and better developer experience.
--   **🎨 Tailwind CSS v4**: The latest utility-first CSS framework.
--   **🛠️ Redux Toolkit**: Validated state management.
--   **🎭 Framer Motion**: Production-ready animations.
--   **🧩 Radix UI**: Accessible, unstyled UI primitives.
--   **📝 React Hook Form + Zod**: Powerful forms with validation.
--   **🌐 Axios**: HTTP client pre-configured.
+- **⚡ Modern Stack**: Powered by **React 19** and **Vite 6** for lightning-fast development and optimized builds.
+- **🎨 Tailwind CSS v4**: Experience the latest in utility-first CSS with native cascade layers and high-performance styling.
+- **🏗️ Modular Architecture**: Choose your setup during installation:
+  - **Public Pages**: Modern landing and informational pages.
+  - **Admin Dashboard**: Comprehensive management interface.
+  - **User Dashboard**: Personal account and activity management.
+- **🛠️ Robust State Management**: **Redux Toolkit** with **Redux Persist** for seamless state synchronization and local storage.
+- **🎭 Motion & UI**: 
+  - **Framer Motion**: Production-ready animations.
+  - **Radix UI**: Accessible, unstyled UI primitives.
+  - **Lucide React**: Beautiful, consistent iconography.
+- **📝 Form Handling**: **React Hook Form** integrated with **Zod** for schema-based type-safe validation.
+- **🔔 Notifications & Dialogs**: **Sonner** for sleek toasts and **SweetAlert2** for premium modal experiences.
+- **🌐 Network Ready**: **Axios** pre-configured for API interactions with environment variable support.
 
-## 📦 Scripts
+---
 
--   `npm run dev`: Start the development server.
--   `npm run build`: Build for production.
--   `npm run lint`: Run ESLint.
--   `npm run preview`: Preview the production build.
+## 📦 Available Scripts
+
+- `npm run dev`: Start the development server.
+- `npm run build`: Build the application for production.
+- `npm run lint`: Run ESLint to check for code quality.
+- `npm run preview`: Preview the production build locally.
+
+---
 
 ## 📄 License
 
-MIT © [naim0018](https://github.com/naim0018)
+This project is licensed under the **MIT License**.
+
+Built with ❤️ by [naim0018](https://github.com/naim0018)
 
