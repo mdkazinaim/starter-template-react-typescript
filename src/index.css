@@ -9,96 +9,76 @@
 @import "tailwindcss";
 
 /* =======================
-   🎨 Theme Custom Properties
-========================== */
-@theme {
-  /* Custom Website Colors */
-  --color-website-color-black: #212a31;
-  --color-website-color-darkGray: #2e3944;
-  --color-website-color-lightGray: #d3d9d4;
-  --color-website-color-green: #124e66;
-  --color-website-color-lightGreen: #748d92;
-  --color-website-color-blue: #1c2a33;
-
-  /* Font Families */
-  --font-poppins: "Poppins", sans-serif;
-  --font-montserrat: "Montserrat", sans-serif;
-}
-
-/* =======================
-   🌈 Root Color Theme Variables
+   🌈 Root Design Tokens
 ========================== */
 :root {
-  --primary-background: #f1f5f8;
+  /* --- Colors --- */
+  --primary-background: #161e49;
   --light-background: #fefefe;
-  --border: #e8eaeb;
+  --border-color: #e8eaeb;
 
   --primary-blue: #0082fa;
-  --dark-blue: #1c2a33;
+  --dark-blue: #161e49;
   --light-gray: #70797e;
 
   --primary-green: #08ad36;
   --light-green: #08ad361a;
+  --website-green: #14006b93;
+  --website-light-green: #748d92;
 
   --primary-yellow: #fcab3f;
   --light-yellow: #fcab3f1a;
-
   --primary-orange: #ffa600;
   --light-orange: #ffa6001a;
-
   --primary-red: #ff0000;
   --light-red: #ff00001a;
-
   --primary-purple: #8a38f5;
   --light-purple: #8a38f51a;
-
-  --primary-purple-new: #9747ff;
-  --light-purple-new: #9747ff1a;
-
   --primary-cyan: #00c7f4;
   --light-cyan: #00c7f41a;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
 }
 
 /* =======================
-   🎨 Inline Theme Variables (For JS Use or Theme Switching)
+   🎨 Tailwind Theme Configuration
 ========================== */
-@theme inline {
+@theme {
+  /* Colors */
   --color-primary-background: var(--primary-background);
   --color-light-background: var(--light-background);
-  --color-border: var(--border);
+  --color-border: var(--border-color);
   --color-primary-blue: var(--primary-blue);
   --color-dark-blue: var(--dark-blue);
   --color-light-gray: var(--light-gray);
   --color-primary-green: var(--primary-green);
   --color-light-green: var(--light-green);
+  --color-website-green: var(--website-green);
+  --color-website-light-green: var(--website-light-green);
   --color-primary-red: var(--primary-red);
-  --color-light-red: var(--light-red);
   --color-primary-yellow: var(--primary-yellow);
-  --color-light-yellow: var(--light-yellow);
   --color-primary-orange: var(--primary-orange);
-  --color-light-orange: var(--light-orange);
   --color-primary-purple: var(--primary-purple);
-  --color-light-purple: var(--light-purple);
-  --color-primary-purple-new: var(--primary-purple-new);
-  --color-light-purple-new: var(--light-purple-new);
   --color-primary-cyan: var(--primary-cyan);
-  --color-light-cyan: var(--light-cyan);
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  /* Fonts */
+  --font-montserrat: var(--font-main);
+  --font-poppins: var(--font-secondary);
 }
 
 /* =======================
    ✨ Base Styles
 ========================== */
 @layer base {
-  html {
-    font-family: var(--font-montserrat);
-  }
-
+  html,
   body {
-    font-family: var(--font-montserrat);
-  }
-
-  * {
-    font-family: var(--font-montserrat);
+    font-family: var(--font-main);
+    background-color: var(--primary-background);
+    color: var(--dark-blue);
+    line-height: var(--leading-normal);
   }
 
   *:focus,
@@ -107,81 +87,46 @@
     box-shadow: none !important;
   }
 
-  /* Headings */
+  /* Typography Hierarchy */
   h1 {
-    @apply font-semibold;
-    font-size: clamp(1.875rem, 3vw + 1rem, 2rem); /* 28px → 56px */
-    line-height: 1.2;
+    font-size: clamp(var(--text-3xl), 3vw + 1rem, var(--text-4xl));
+    font-weight: 600;
+    line-height: var(--leading-tight);
   }
 
   h2 {
-    @apply font-semibold text-dark-blue;
-    font-size: clamp(1.125rem, 2vw + 0.5rem, 1.5rem); /* 18px → 24px */
-    line-height: 1.3;
+    font-size: clamp(var(--text-xl), 2vw + 0.5rem, var(--text-2xl));
+    font-weight: 600;
+    line-height: var(--leading-snug);
   }
 
   h3 {
-    @apply font-medium;
-    font-size: clamp(1rem, 2vw + 0.25rem, 1.25rem); /* 16px → 20px */
-    line-height: 1.4;
+    font-size: clamp(var(--text-lg), 2vw + 0.25rem, var(--text-xl));
+    font-weight: 500;
+    line-height: var(--leading-snug);
   }
 
   h4 {
-    @apply font-medium;
-    font-size: 1.125rem; /* 18px */
-    line-height: 1.5;
+    font-size: var(--text-lg);
+    font-weight: 500;
   }
 
   h5 {
-    @apply font-normal;
-    font-size: 1rem; /* 16px */
-    line-height: 1.5;
+    font-size: var(--text-base);
+    font-weight: 400;
   }
 
   h6 {
-    @apply font-normal text-light-gray;
-    font-size: 0.875rem; /* 14px */
-    line-height: 1.5;
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--light-gray);
   }
 
-  /* Paragraph */
   p {
-    @apply font-medium text-base text-dark-blue;
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: var(--text-base);
+    font-weight: 500;
+    line-height: var(--leading-relaxed);
   }
-
-  small {
-    @apply text-sm text-light-gray;
-    font-size: 0.75rem;
-  }
-
-  strong {
-    @apply font-semibold text-dark-blue;
-  }
-
-  span {
-    @apply text-sm;
-  }
-
-  a {
-    @apply text-primary-blue hover:text-dark-blue transition;
-  }
-}
-
-/* =======================
-   🛠️ Custom Utility Classes
-========================== */
-@utility p1 {
-  @apply text-base text-dark-blue font-medium;
-  font-size: clamp(1rem, 1vw + 0.5rem, 1rem); /* ~16px */
-  line-height: 1.6;
-}
-
-@utility p2 {
-  @apply text-sm text-light-gray font-normal;
-  font-size: clamp(0.875rem, 1vw + 0.25rem, 0.875rem); /* ~14px */
-  line-height: 1.6;
 }
 
 /* =======================
@@ -189,14 +134,22 @@
 ========================== */
 @layer components {
   .custom-checkbox {
-    @apply appearance-none h-4 w-4 border-2 border-blue-500 rounded 
-      checked:bg-blue-500 checked:ring-4 checked:ring-blue-200 
-      cursor-pointer transition-all duration-200;
+    @apply appearance-none h-4 w-4 border-2 rounded cursor-pointer transition-all duration-200;
+    border-color: var(--primary-blue);
+  }
+
+  .custom-checkbox:checked {
+    background-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px var(--light-green);
   }
 
   .custom-checkbox-red {
-    @apply appearance-none h-4 w-4 border-2 border-red-500 rounded 
-      checked:bg-red-500 checked:ring-4 checked:ring-red-200 
-      cursor-pointer transition-all duration-200;
+    @apply appearance-none h-4 w-4 border-2 rounded cursor-pointer transition-all duration-200;
+    border-color: var(--primary-red);
+  }
+
+  .custom-checkbox-red:checked {
+    background-color: var(--primary-red);
+    box-shadow: 0 0 0 4px var(--light-red);
   }
 }

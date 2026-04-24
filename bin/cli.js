@@ -247,6 +247,23 @@ const run = async () => {
     writeFileSync(routesPath, routesContent);
   }
 
+  // 1.5 Replace App Name placeholders
+  progressBar.update(85, { task: "Customizing application name..." });
+  const filesToUpdate = [
+    "index.html",
+    "src/Layout/PublicLayout/Navbar.tsx",
+    "src/Layout/DashboardLayout/Sidebar.tsx",
+  ];
+
+  filesToUpdate.forEach((file) => {
+    const filePath = resolve(projectPath, file);
+    if (existsSync(filePath)) {
+      let content = readFileSync(filePath, "utf-8");
+      content = content.replace(/REACT STARTER TEMPLATE/g, appName);
+      writeFileSync(filePath, content);
+    }
+  });
+
   progressBar.update(90, { task: "Finalizing package.json..." });
   await sleep(200);
 

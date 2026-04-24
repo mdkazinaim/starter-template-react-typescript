@@ -4,9 +4,9 @@ import Footer from "./Footer";
 
 const Layout: React.FC = () => {
   return (
-    <div>
+    <div className="">
       <Navbar />
-      <main>
+      <main className="bg-light-background min-h-screen">
         <Outlet />
       </main>
       <Footer />

@@ -5,6 +5,8 @@ import { logOut } from "@/store/features/AuthSlice/authSlice";
 import UserProfile from "@/common/UserProfile";
 import NavItems from "./NavItems";
 
+import CommonWrapper from "@/common/CommonWrapper";
+
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -19,12 +21,12 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-website-color-green shadow-lg">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-primary-background shadow-lg">
+      <CommonWrapper className="px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="text-white text-2xl font-bold">
-            MyApp
+            REACT STARTER TEMPLATE
           </Link>
 
           {/* Desktop Navigation */}
@@ -64,7 +66,7 @@ const Navbar: React.FC = () => {
             </svg>
           </button>
         </div>
-      </div>
+      </CommonWrapper>
 
       {/* Mobile Navigation */}
       {isOpen && (

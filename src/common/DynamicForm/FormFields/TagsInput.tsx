@@ -31,29 +31,29 @@ const TagsInput = ({
   const filteredSuggestions = suggestions.filter(
     (suggestion) =>
       !value.includes(suggestion) &&
-      suggestion.toLowerCase().includes(inputValue.toLowerCase())
+      suggestion.toLowerCase().includes(inputValue.toLowerCase()),
   );
 
   const addTag = (tag: string) => {
     const trimmedTag = tag.trim();
-    
+
     if (!trimmedTag) return;
-    
+
     if (value.includes(trimmedTag)) {
       setInputValue("");
       return;
     }
-    
+
     if (maxTags && value.length >= maxTags) {
       setInputValue("");
       return;
     }
-    
+
     if (!allowCustom && !suggestions.includes(trimmedTag)) {
       setInputValue("");
       return;
     }
-    
+
     onChange([...value, trimmedTag]);
     setInputValue("");
     setShowSuggestions(false);
@@ -93,9 +93,11 @@ const TagsInput = ({
   return (
     <div className={`relative ${className}`}>
       <div
-        className={`flex flex-wrap gap-2 p-2 border rounded-lg min-h-[42px] ${
-          disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"
-        } focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent`}
+        className={`flex flex-wrap gap-2 p-2.5 border border-gray-200 rounded-lg min-h-[44px] transition-all duration-200 ${
+          disabled
+            ? "bg-gray-100/50 cursor-not-allowed"
+            : "bg-gray-50/50 hover:bg-gray-50 focus-within:bg-white focus-within:border-primary-background/50 focus-within:ring-4 focus-within:ring-primary-background/10"
+        }`}
         onClick={() => inputRef.current?.focus()}
       >
         {value.map((tag) => (
@@ -116,7 +118,7 @@ const TagsInput = ({
             )}
           </span>
         ))}
-        
+
         <input
           ref={inputRef}
           type="text"
@@ -125,7 +127,9 @@ const TagsInput = ({
           onKeyDown={handleKeyDown}
           onFocus={() => inputValue && setShowSuggestions(true)}
           placeholder={value.length === 0 ? placeholder : ""}
-          disabled={disabled || (maxTags !== undefined && value.length >= maxTags)}
+          disabled={
+            disabled || (maxTags !== undefined && value.length >= maxTags)
+          }
           className="flex-1 min-w-[120px] outline-none bg-transparent disabled:cursor-not-allowed"
         />
       </div>

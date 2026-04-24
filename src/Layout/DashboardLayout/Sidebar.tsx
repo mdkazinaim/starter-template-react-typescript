@@ -118,10 +118,10 @@ const Sidebar = () => {
   }, {});
 
   return (
-    <aside className="w-64 h-screen bg-gray-700 text-white sticky top-0 z-40 flex flex-col">
+    <aside className="w-64 h-screen bg-primary-background text-white sticky top-0 z-40 flex flex-col">
       <div className="p-4 h-16 text-xl font-bold border-b border-gray-600 flex items-center">
         <Link to="/" className="no-underline">
-          React Starter Pack
+          REACT STARTER TEMPLATE
         </Link>
       </div>
 

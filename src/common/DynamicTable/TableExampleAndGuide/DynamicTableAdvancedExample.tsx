@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import DynamicTable, { Column } from "@/common/DynamicTable/DynamicTable";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Pencil, Trash2, Eye, Download, Filter, X, Search } from "lucide-react";
+import { SelectField } from "@/common/DynamicForm/FormFields/SelectField";
 
 // ============================================
 // 📦 Types
@@ -185,7 +186,7 @@ const AdvancedTableExample = () => {
       setTotalRecords(filteredUsers.length);
       setLoading(false);
     }, 500);
-  }, [debouncedSearchQuery, filters, currentPage, pageSize]);
+  }, [debouncedSearchQuery, filters, currentPage, pageSize,searchQuery]);
 
   // Fetch on mount and when dependencies change
   useEffect(() => {
@@ -535,15 +536,17 @@ const AdvancedTableExample = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Status
               </label>
-              <select
+              <SelectField
+                options={[
+                  { value: "", label: "All Status" },
+                  { value: "active", label: "Active" },
+                  { value: "inactive", label: "Inactive" },
+                ]}
                 value={filters.status || ""}
-                onChange={(e) => handleFilterChange("status", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
+                onChange={(val) => handleFilterChange("status", val)}
+                placeholder="All Status"
+                className="h-10 bg-white"
+              />
             </div>
 
             {/* Department Filter */}
@@ -551,19 +554,19 @@ const AdvancedTableExample = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Department
               </label>
-              <select
+              <SelectField
+                options={[
+                  { value: "", label: "All Departments" },
+                  { value: "Engineering", label: "Engineering" },
+                  { value: "Marketing", label: "Marketing" },
+                  { value: "Sales", label: "Sales" },
+                  { value: "HR", label: "HR" },
+                ]}
                 value={filters.department || ""}
-                onChange={(e) =>
-                  handleFilterChange("department", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All Departments</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Sales">Sales</option>
-                <option value="HR">HR</option>
-              </select>
+                onChange={(val) => handleFilterChange("department", val)}
+                placeholder="All Departments"
+                className="h-10 bg-white"
+              />
             </div>
 
             {/* Age Min Filter */}

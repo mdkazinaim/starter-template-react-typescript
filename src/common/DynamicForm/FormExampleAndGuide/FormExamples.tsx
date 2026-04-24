@@ -93,7 +93,7 @@ const UserRegistrationExample = () => {
         required: true,
       },
     ],
-    []
+    [],
   );
 
   const schema = useMemo(() => generateZodSchema(fields), [fields]);
@@ -105,8 +105,10 @@ const UserRegistrationExample = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-sm border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-dark-blue">User Registration</h2>
+    <div className=" mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
+      <h2 className="text-2xl font-bold mb-6 text-dark-blue">
+        User Registration
+      </h2>
       <CommonForm
         fields={fields}
         schema={schema}
@@ -116,7 +118,7 @@ const UserRegistrationExample = () => {
         layout="vertical"
       />
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-border">
+        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
           <h3 className="font-semibold mb-3">Submitted Data:</h3>
           <pre className="text-sm overflow-auto text-gray-700">
             {JSON.stringify(formData, null, 2)}
@@ -242,7 +244,7 @@ const JobApplicationExample = () => {
         defaultValue: true,
       },
     ],
-    []
+    [],
   );
 
   const schema = useMemo(() => generateZodSchema(fields), [fields]);
@@ -254,8 +256,10 @@ const JobApplicationExample = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-white rounded-xl shadow-sm border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-dark-blue">Job Application</h2>
+    <div className=" mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
+      <h2 className="text-2xl font-bold mb-6 text-dark-blue">
+        Job Application
+      </h2>
       <CommonForm
         fields={fields}
         schema={schema}
@@ -266,7 +270,7 @@ const JobApplicationExample = () => {
         gridCols={3} // Increased columns to show density
       />
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-border">
+        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
           <h3 className="font-semibold mb-3">Submitted Data:</h3>
           <pre className="text-sm overflow-auto max-h-96 text-gray-700">
             {JSON.stringify(formData, null, 2)}
@@ -355,7 +359,7 @@ const ConditionalFieldsExample = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   const schema = useMemo(() => generateZodSchema(fields), [fields]);
@@ -367,8 +371,10 @@ const ConditionalFieldsExample = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white rounded-xl shadow-sm border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-dark-blue">Conditional Fields Example</h2>
+    <div className=" mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
+      <h2 className="text-2xl font-bold mb-6 text-dark-blue">
+        Conditional Fields Example
+      </h2>
       <p className="text-gray-600 mb-4">
         Fields will appear/disappear based on your selections
       </p>
@@ -380,7 +386,7 @@ const ConditionalFieldsExample = () => {
         showResetButton
       />
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-border">
+        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
           <h3 className="font-semibold mb-3">Submitted Data:</h3>
           <pre className="text-sm overflow-auto text-gray-700">
             {JSON.stringify(formData, null, 2)}
@@ -520,6 +526,12 @@ const AllFieldTypesExample = () => {
         defaultValue: ["tag1", "tag2"],
       },
       {
+        name: "dateRangeInput",
+        label: "Date Range Picker",
+        type: "date-range",
+        defaultValue: [new Date("2024-01-01"), new Date("2024-01-15")],
+      },
+      {
         name: "fileInput",
         label: "File Upload",
         type: "file",
@@ -527,7 +539,7 @@ const AllFieldTypesExample = () => {
         preview: true,
       },
     ],
-    []
+    [],
   );
 
   const schema = useMemo(() => generateZodSchema(fields), [fields]);
@@ -539,18 +551,22 @@ const AllFieldTypesExample = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-8 bg-white rounded-xl shadow-sm border border-border">
+    <div className="w-full  mx-auto p-8 bg-white rounded-lg shadow-sm border border-border">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-dark-blue">Layout Playground</h2>
+          <h2 className="text-2xl font-bold text-dark-blue">
+            Layout Playground
+          </h2>
           <p className="text-gray-600">
             Interactive demo of supported field types and layout options
           </p>
         </div>
-        
+
         {/* Layout Controls */}
         <div className="flex flex-wrap items-center gap-3 bg-gray-50 p-2 rounded-lg border border-border">
-          <span className="text-sm font-medium text-gray-600 pl-2">Layout:</span>
+          <span className="text-sm font-medium text-gray-600 pl-2">
+            Layout:
+          </span>
           <button
             onClick={() => setLayout("vertical")}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
@@ -563,7 +579,10 @@ const AllFieldTypesExample = () => {
           </button>
           <div className="w-px h-4 bg-gray-300 mx-1"></div>
           <button
-            onClick={() => { setLayout("grid"); setGridCols(2); }}
+            onClick={() => {
+              setLayout("grid");
+              setGridCols(2);
+            }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "grid" && gridCols === 2
                 ? "bg-white text-primary-blue shadow-sm border border-gray-200"
@@ -573,7 +592,10 @@ const AllFieldTypesExample = () => {
             Grid (2 Col)
           </button>
           <button
-            onClick={() => { setLayout("grid"); setGridCols(3); }}
+            onClick={() => {
+              setLayout("grid");
+              setGridCols(3);
+            }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "grid" && gridCols === 3
                 ? "bg-white text-primary-blue shadow-sm border border-gray-200"
@@ -583,7 +605,10 @@ const AllFieldTypesExample = () => {
             Grid (3 Col)
           </button>
           <button
-            onClick={() => { setLayout("grid"); setGridCols(4); }}
+            onClick={() => {
+              setLayout("grid");
+              setGridCols(4);
+            }}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
               layout === "grid" && gridCols === 4
                 ? "bg-white text-primary-blue shadow-sm border border-gray-200"
@@ -604,9 +629,9 @@ const AllFieldTypesExample = () => {
         layout={layout}
         gridCols={gridCols}
       />
-      
+
       {!!formData && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-border">
+        <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-border">
           <h3 className="font-semibold mb-3">Submitted Data:</h3>
           <pre className="text-sm overflow-auto max-h-96 text-gray-700">
             {JSON.stringify(formData, null, 2)}
@@ -648,7 +673,7 @@ const FormExamples = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen w-full py-8">
       <div className="w-full mx-auto px-4">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">

@@ -19,11 +19,14 @@ export type FieldType =
   | "radio"
   | "date"
   | "datetime-local"
+  | "date-time"
+  | "date-range"
   | "time"
   | "file"
   | "range"
   | "color"
   | "switch"
+  | "toggle"
   | "tags"
   | "rich-text";
 
@@ -166,10 +169,16 @@ export interface RadioFieldConfig extends BaseFieldConfig {
 // ============================================
 
 export interface DateFieldConfig extends BaseFieldConfig {
-  type: "date" | "datetime-local" | "time";
+  type: "date" | "datetime-local" | "date-time" | "time";
   min?: string | Date;
   max?: string | Date;
   format?: string; // Display format
+}
+
+export interface DateRangeFieldConfig extends BaseFieldConfig {
+  type: "date-range";
+  min?: string | Date;
+  max?: string | Date;
 }
 
 // ============================================
@@ -200,7 +209,7 @@ export interface ColorFieldConfig extends BaseFieldConfig {
 // ============================================
 
 export interface SwitchFieldConfig extends BaseFieldConfig {
-  type: "switch";
+  type: "switch" | "toggle";
   onLabel?: string;
   offLabel?: string;
 }
@@ -242,6 +251,7 @@ export type FieldConfig =
   | CheckboxGroupFieldConfig
   | RadioFieldConfig
   | DateFieldConfig
+  | DateRangeFieldConfig
   | FileFieldConfig
   | ColorFieldConfig
   | SwitchFieldConfig

@@ -1,11 +1,12 @@
 import React from "react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import NavItems from "./NavItems";
+import CommonWrapper from "@/common/CommonWrapper";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#212a31] text-white py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-primary-background py-8">
+      <CommonWrapper className="px-4 text-white">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
@@ -92,7 +93,7 @@ const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()}
           </p>
         </div>
-      </div>
+      </CommonWrapper>
     </footer>
   );
 };

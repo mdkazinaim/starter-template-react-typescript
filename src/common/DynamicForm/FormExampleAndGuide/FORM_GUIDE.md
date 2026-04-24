@@ -2,183 +2,164 @@
 
 ## Overview
 
-The `CommonForm` component is a robust, data-driven form solution designed for flexibility and ease of use. It supports over 20 field types, comprehensive validation (using Zod), default values, conditional rendering, file uploads with previews, and more.
+The `CommonForm` component is a premium, data-driven form solution built with **React Hook Form**, **Zod**, and **Shadcn UI**. It is designed to handle complex form scenarios with minimal boilerplate while maintaining a high-end aesthetic.
 
-## Features
+## Key Features
 
-- **20+ Field Types**: Text, email, password, number, select, multiselect, checkbox, radio, date, time, file upload, tags, rich text (placeholder), and more.
-- **Validation**: Automatic Zod schema generation with support for custom validation rules.
-- **Default Values**: Pre-populate forms with existing data.
-- **Conditional Logic**: Show/hide fields based on the values of other fields.
-- **Visual Enhancements**: Password visibility toggle, file previews, loading states.
-- **Layout Control**: Support for vertical, horizontal, and grid layouts.
+- **25+ Field Types**: Support for everything from standard text to advanced `date-range`, `color-picker`, and `tags`.
+- **Automatic Validation**: Schema-driven validation using `generateZodSchema` utility.
+- **Smart Layouts**: Responsive vertical, horizontal, and grid-based layouts with column span control.
+- **Conditional Rendering**: Show or hide fields dynamically based on other field values.
+- **Premium Components**: Custom-styled popovers, calendars, and selection inputs with smooth animations.
+- **Type Safety**: Strictly typed configurations ensuring your form data matches your schema.
+
+## Supported Field Types
+
+| Category | Types |
+| :--- | :--- |
+| **Standard** | `text`, `email`, `password`, `number`, `tel`, `url`, `textarea` |
+| **Selection** | `select`, `multiselect`, `checkbox`, `checkbox-group`, `radio`, `toggle` (or `switch`) |
+| **Date & Time** | `date`, `date-time`, `date-range`, `time` |
+| **Advanced** | `file`, `color`, `tags`, `rich-text`, `range` |
+
+---
 
 ## Basic Usage
 
 ```tsx
-import CommonForm from "@/common/CommonForm";
+import { CommonForm } from "@/common/DynamicForm/CommonForm";
 import { generateZodSchema } from "@/utils/generateZodSchema";
-import type { FieldConfig } from "@/common/FormFields/FieldTypes";
+import { FieldConfig } from "@/common/DynamicForm/FormFields/FieldTypes";
 
 const MyForm = () => {
   const fields: FieldConfig[] = [
-    {
-      name: "fullName",
-      label: "Full Name",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "email",
-      label: "Email Address",
-      type: "email",
-      required: true,
-    },
+    { name: "name", label: "Full Name", type: "text", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
   ];
 
   const schema = generateZodSchema(fields);
 
-  const handleSubmit = (data: any) => {
-    console.log(data);
-  };
+  const handleSubmit = (data: any) => console.log(data);
 
   return (
     <CommonForm
       fields={fields}
       schema={schema}
       onSubmit={handleSubmit}
+      submitButtonText="Create Account"
     />
   );
 };
 ```
 
-## Field Configuration
+---
 
-Each field is defined by a `FieldConfig` object. Here are some examples:
+## Advanced Field Configurations
 
-### Text & Password
+### 📅 Date Range Picker
+Captures a start and end date in a single field.
 ```typescript
 {
-  name: "password",
-  label: "Password",
-  type: "password",
+  name: "duration",
+  label: "Vacation Period",
+  type: "date-range",
   required: true,
-  minLength: 8,
-  helpText: "Must be at least 8 characters",
+  helpText: "Select the start and end dates"
 }
 ```
 
-### Select & Multiselect
-```typescript
-{
-  name: "role",
-  label: "User Role",
-  type: "select",
-  options: [
-    { value: "admin", label: "Administrator" },
-    { value: "user", label: "User" },
-  ],
-}
-```
-
-### Conditional Fields
-Show a field only when another field has a specific value:
-```typescript
-{
-  name: "otherRole",
-  label: "Specify Role",
-  type: "text",
-  showWhen: {
-    field: "role",
-    operator: "equals",
-    value: "other",
-  },
-}
-```
-
-### File Upload
-```typescript
-{
-  name: "avatar",
-  label: "Profile Picture",
-  type: "file",
-  accept: "image/*",
-  preview: true,
-  maxSize: 5 * 1024 * 1024, // 5MB
-}
-```
-
-### Tags Input (New)
+### 🏷️ Tags Input
+Interactive tagging system with suggestions.
 ```typescript
 {
   name: "skills",
-  label: "Skills",
+  label: "Expertise",
   type: "tags",
   maxTags: 5,
-  suggestions: ["React", "TypeScript", "Node.js"],
+  suggestions: ["React", "TypeScript", "Tailwind"],
 }
 ```
 
-## Default Values
-
-You can provide default values in two ways:
-1. **Per Field**: Add `defaultValue` to the field config.
-2. **Form Level**: Pass a `defaultValues` object to the `CommonForm` component.
-
+### 🎨 Color Picker
+Custom HEX color picker with visual preview.
 ```typescript
-// Field Config
+{
+  name: "brandColor",
+  label: "Brand Identity",
+  type: "color",
+  defaultValue: "#3b82f6"
+}
+```
+
+### 🔗 Conditional Logic
+Fields can react to values of other fields using the `showWhen` property.
+```typescript
+{
+  name: "otherReason",
+  label: "Please specify",
+  type: "textarea",
+  showWhen: {
+    field: "reason",
+    operator: "equals",
+    value: "other"
+  }
+}
+```
+
+---
+
+## Validation & Schemas
+
+The `generateZodSchema` utility automatically builds a Zod schema from your `fields` array.
+
+### Custom Validation Rules
+You can add specific constraints beyond just `required`:
+```typescript
 {
   name: "username",
   type: "text",
-  defaultValue: "johndoe",
-}
-
-// Form Component
-<CommonForm
-  defaultValues={{ username: "johndoe" }}
-  // ...
-/>
-```
-
-## Validation
-
-Validation is handled automatically via `generateZodSchema`. You can add custom rules:
-
-```typescript
-{
-  name: "customField",
-  type: "text",
   validation: [
-    { rule: "hasUppercase", message: "Must contain an uppercase letter" },
-  ],
+    { rule: "noSpaces", message: "Spaces are not allowed" },
+    { rule: "hasNumber", message: "Must include a digit" }
+  ]
 }
 ```
-Supported custom rules: `hasUppercase`, `hasLowercase`, `hasNumber`, `hasSpecialChar`, `minWords`, `maxWords`, `isAlphanumeric`, `noSpaces`.
 
-## Layouts
+**Supported Rules:**
+- `hasUppercase`, `hasLowercase`, `hasNumber`, `hasSpecialChar`
+- `minWords`, `maxWords`
+- `isAlphanumeric`, `noSpaces`
 
-The form supports three layout modes:
+---
 
-- `vertical`: Fields stacked vertically (default).
-- `horizontal`: Fields specific spacing (customizable).
-- `grid`: Fields arranged in a grid.
- 
+## Layout Controls
+
+### Grid Layout
+Use `gridCols` at the form level and `grid` span at the field level for complex designs.
+
 ```tsx
 <CommonForm
   layout="grid"
-  gridCols={2} // Number of columns
+  gridCols={2}
+  fields={[
+    { name: "firstName", label: "First Name", type: "text" },
+    { name: "lastName", label: "Last Name", type: "text" },
+    { 
+      name: "bio", 
+      label: "Biography", 
+      type: "textarea", 
+      grid: { col: 2 } // Spans both columns
+    }
+  ]}
   // ...
 />
 ```
 
-## Resetting the Form
+---
 
-To show a reset button:
+## Styling & UX
 
-```tsx
-<CommonForm
-  showResetButton
-  resetButtonText="Clear Form"
-  // ...
-/>
-```
+- **Popover Alignment**: All selection and date pickers use `var(--radix-popover-trigger-width)` to ensure they match the input width perfectly.
+- **Visual Feedback**: Errors are highlighted with red borders and descriptive messages below the field.
+- **Interaction**: Password fields include a visibility toggle, and file uploads support real-time previews.
+

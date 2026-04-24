@@ -1,10 +1,13 @@
+import CommonWrapper from "@/common/CommonWrapper";
 import AdvancedTableExample from "@/common/DynamicTable/TableExampleAndGuide/DynamicTableAdvancedExample";
 
 const TableDemo = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdvancedTableExample />
-    </div>
+    <CommonWrapper>
+      <div className="min-h-screen">
+        <AdvancedTableExample />
+      </div>
+    </CommonWrapper>
   );
 };
 

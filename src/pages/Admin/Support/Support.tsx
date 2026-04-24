@@ -1,6 +1,10 @@
+import CommonWrapper from "@/common/CommonWrapper";
+
 const Support = () => {
   return (
-    <div>Support</div>
-  )
-}
-export default Support
+    <CommonWrapper>
+      <div>Support</div>
+    </CommonWrapper>
+  );
+};
+export default Support;
