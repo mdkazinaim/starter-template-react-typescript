@@ -1,21 +1,23 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
   itemsPerPage: number;
-  totalPrograms: number;
+  totalItems: number;
   onPageChange: (page: number) => void;
+  label?: string;
 }
 
 const Pagination = ({
   currentPage,
   totalPages,
   itemsPerPage,
-  totalPrograms,
+  totalItems,
   onPageChange,
+  label = "Results",
 }: PaginationProps) => {
-  if (totalPages <= 1) return null; // No need for pagination if only 1 page
   const getPageButtons = () => {
     const buttons: (number | string)[] = [];
 
@@ -40,64 +42,67 @@ const Pagination = ({
   };
 
   const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalPrograms);
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+
+  if (totalItems === 0) return null;
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between gap-2 px-6 py-4 border-t border-gray-200">
-      {/* Showing X to Y of Z */}
-      <div className="text-sm text-gray-600">
-        Showing {startItem} to {endItem} of{" "}
-        <span className="font-semibold">{totalPrograms}</span>{" "}
-        Programs
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-gray-100 bg-white">
+      {/* Showing X-Y of Z */}
+      <div className="text-[13px] font-bold text-gray-400">
+        Showing <span className="text-gray-900">{startItem}-{endItem}</span> of{" "}
+        <span className="text-gray-900">{totalItems}</span>{" "}
+        {label}
       </div>
 
       {/* Pagination Buttons */}
-      <div className="flex items-center gap-2">
-        {/* Prev Button */}
-        <button
-          onClick={() => {
-            onPageChange(Math.max(1, currentPage - 1));
-          }}
-          disabled={currentPage === 1}
-          className="flex items-center gap-1 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ChevronLeft size={16} />
-          Prev
-        </button>
+      {totalPages > 1 && (
+        <div className="flex items-center gap-1.5">
+          {/* Prev Button */}
+          <button
+            onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-100 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          >
+            <ChevronLeft size={16} />
+            Prev
+          </button>
 
-        {/* Page Buttons */}
-        {getPageButtons().map((btn, idx) =>
-          btn === "..." ? (
-            <span key={idx} className="px-2 text-gray-500">
-              ...
-            </span>
-          ) : (
-            <button
-              key={idx}
-              onClick={() => onPageChange(btn as number)}
-              className={`px-3 py-2 text-sm rounded-md ${
-                currentPage === btn
-                  ? "bg-blue-600 text-white"
-                  : "border border-gray-300 hover:bg-gray-50"
-              }`}
-            >
-              {btn}
-            </button>
-          )
-        )}
+          {/* Page Buttons */}
+          <div className="hidden sm:flex items-center gap-1">
+            {getPageButtons().map((btn, idx) =>
+              btn === "..." ? (
+                <span key={idx} className="w-9 text-center text-gray-300 font-bold">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={idx}
+                  onClick={() => onPageChange(btn as number)}
+                  className={cn(
+                    "w-9 h-9 flex items-center justify-center text-sm font-bold rounded-lg transition-all",
+                    currentPage === btn
+                      ? "bg-primary-background text-white shadow-sm shadow-primary-background/20"
+                      : "text-gray-500 hover:bg-gray-50 border border-transparent hover:border-gray-100"
+                  )}
+                >
+                  {btn}
+                </button>
+              )
+            )}
+          </div>
 
-        {/* Next Button */}
-        <button
-          onClick={() =>
-            onPageChange(Math.min(totalPages, currentPage + 1))
-          }
-          disabled={currentPage === totalPages}
-          className="flex items-center gap-1 px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Next
-          <ChevronRight size={16} />
-        </button>
-      </div>
+          {/* Next Button */}
+          <button
+            onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-100 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          >
+            Next
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

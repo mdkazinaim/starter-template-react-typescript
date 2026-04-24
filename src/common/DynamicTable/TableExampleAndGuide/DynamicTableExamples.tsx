@@ -304,7 +304,6 @@ const ProductTableExample = () => {
         pageSize={10}
         searchable
         hoverable
-        compact
       />
     </div>
   );

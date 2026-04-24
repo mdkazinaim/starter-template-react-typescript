@@ -1,679 +1,416 @@
-import { useState, useEffect, useCallback } from "react";
 import DynamicTable, { Column } from "@/common/DynamicTable/DynamicTable";
-import { useDebounce } from "@/hooks/useDebounce";
-import { Pencil, Trash2, Eye, Download, Filter, X, Search } from "lucide-react";
-import { SelectField } from "@/common/DynamicForm/FormFields/SelectField";
+import {
+  Pencil,
+  Trash2,
+  Eye,
+  Download,
+  Share2,
+  FileText,
+  Image as ImageIcon,
+  FileCode,
+  FileVideo,
+  File as FileIcon,
+} from "lucide-react";
+import { StatusPill } from "@/common/DynamicTable/TableComponents";
+import { Avatar, AvatarStack } from "@/common/Avatar";
 
 // ============================================
 // 📦 Types
 // ============================================
 
-interface User extends Record<string, unknown> {
-  id: number;
+interface ProjectFile extends Record<string, unknown> {
+  id: string;
   name: string;
-  email: string;
-  role: "admin" | "user" | "moderator";
-  status: "active" | "inactive";
-  createdAt: string;
-  age: number;
-  department: string;
-}
-
-interface FilterOptions {
-  role?: string;
-  status?: string;
-  department?: string;
-  ageMin?: number;
-  ageMax?: number;
-}
-
-interface QueryParams {
-  search: string;
-  filters: FilterOptions;
-  page: number;
-  pageSize: number;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
+  type: string;
+  taskLink: string;
+  addedBy: { name: string; avatar?: string };
+  assignStaff: { name: string; avatar?: string }[];
+  priority: "High" | "Medium" | "Low";
+  dueDate: string;
+  level: "High" | "Medium" | "Low";
+  fileSize: string;
+  attachments?: number;
+  comments?: number;
 }
 
 // ============================================
-// 🎯 Advanced Table with Filters & Bulk Actions
+// 🎯 Premium Table Example (Matches Images)
 // ============================================
-
-// Mock data (in real app, this would come from API)
-const mockUsers: User[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "admin",
-    status: "active",
-    createdAt: "2024-01-15",
-    age: 28,
-    department: "Engineering",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "user",
-    status: "active",
-    createdAt: "2024-02-20",
-    age: 32,
-    department: "Marketing",
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    role: "moderator",
-    status: "inactive",
-    createdAt: "2024-03-10",
-    age: 45,
-    department: "Sales",
-  },
-  {
-    id: 4,
-    name: "Alice Williams",
-    email: "alice@example.com",
-    role: "user",
-    status: "active",
-    createdAt: "2024-04-05",
-    age: 29,
-    department: "Engineering",
-  },
-  {
-    id: 5,
-    name: "Charlie Brown",
-    email: "charlie@example.com",
-    role: "admin",
-    status: "active",
-    createdAt: "2024-05-12",
-    age: 38,
-    department: "HR",
-  },
-];
 
 const AdvancedTableExample = () => {
-  // ============================================
-  // State Management
-  // ============================================
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Debounce search to prevent excessive API calls
-  const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
-  // Filter states
-  const [filters, setFilters] = useState<FilterOptions>({
-    role: "",
-    status: "",
-    department: "",
-    ageMin: undefined,
-    ageMax: undefined,
-  });
-
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
-  const [totalRecords, setTotalRecords] = useState(0);
-
-  // ============================================
-  // Fetch Data with Query Parameters
-  // ============================================
-  const fetchUsers = useCallback(async () => {
-    setLoading(true);
-
-    // Build query parameters
-    const queryParams: QueryParams = {
-      search: debouncedSearchQuery,
-      filters: filters,
-      page: currentPage,
-      pageSize: pageSize,
-    };
-
-    // Simulate API call
-    console.log("Fetching with params:", queryParams);
-
-    // In real implementation, you would do:
-    // const response = await fetch(`/api/users?${new URLSearchParams(queryParams)}`);
-    // const data = await response.json();
-
-    // Mock filtering logic
-    setTimeout(() => {
-      let filteredUsers = [...mockUsers];
-
-      // Apply search
-      if (searchQuery) {
-        filteredUsers = filteredUsers.filter(
-          (user) =>
-            user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            user.email.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      }
-
-      // Apply filters
-      if (filters.role) {
-        filteredUsers = filteredUsers.filter(
-          (user) => user.role === filters.role
-        );
-      }
-      if (filters.status) {
-        filteredUsers = filteredUsers.filter(
-          (user) => user.status === filters.status
-        );
-      }
-      if (filters.department) {
-        filteredUsers = filteredUsers.filter(
-          (user) => user.department === filters.department
-        );
-      }
-      if (filters.ageMin) {
-        filteredUsers = filteredUsers.filter(
-          (user) => user.age >= (filters.ageMin || 0)
-        );
-      }
-      if (filters.ageMax) {
-        filteredUsers = filteredUsers.filter(
-          (user) => user.age <= (filters.ageMax || 999)
-        );
-      }
-
-      setUsers(filteredUsers);
-      setTotalRecords(filteredUsers.length);
-      setLoading(false);
-    }, 500);
-  }, [debouncedSearchQuery, filters, currentPage, pageSize,searchQuery]);
-
-  // Fetch on mount and when dependencies change
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  // ============================================
-  // Table Columns
-  // ============================================
-  const columns: Column<User>[] = [
+  const files: ProjectFile[] = [
     {
-      key: "id",
-      label: "ID",
-      accessor: "id",
-      sortable: true,
-      width: "80px",
-      align: "center",
+      id: "1",
+      name: "photo_2025-07-22_03-26-36.jpg",
+      type: "JPG Image",
+      taskLink: "Planning",
+      addedBy: { name: "Mike Smith", avatar: "https://i.pravatar.cc/150?u=1" },
+      assignStaff: [
+        { name: "User 1", avatar: "https://i.pravatar.cc/150?u=10" },
+        { name: "User 2", avatar: "https://i.pravatar.cc/150?u=11" },
+        { name: "User 3", avatar: "https://i.pravatar.cc/150?u=12" },
+        { name: "User 4" },
+        { name: "User 5" },
+        { name: "User 6" },
+        { name: "User 7" },
+        { name: "User 8" },
+      ],
+      priority: "High",
+      dueDate: "24-7-2024",
+      level: "Low",
+      fileSize: "70.47 KB",
+      attachments: 4,
+      comments: 4,
     },
     {
-      key: "name",
-      label: "Name",
-      accessor: "name",
-      sortable: true,
+      id: "2",
+      name: "blue_print_theta_analyzer.pdf",
+      type: "PDF",
+      taskLink: "Plinth beam",
+      addedBy: {
+        name: "Jennifer Jones",
+        avatar: "https://i.pravatar.cc/150?u=2",
+      },
+      assignStaff: [
+        { name: "User 1", avatar: "https://i.pravatar.cc/150?u=13" },
+        { name: "User 2", avatar: "https://i.pravatar.cc/150?u=14" },
+      ],
+      priority: "Medium",
+      dueDate: "24-7-2024",
+      level: "Medium",
+      fileSize: "70.47 KB",
     },
     {
-      key: "email",
-      label: "Email",
-      accessor: "email",
-      sortable: true,
-      hideOnMobile: true,
+      id: "3",
+      name: "LMI-PolicyComparisonReport - Home.xlsx",
+      type: "Excel Worksheet",
+      taskLink: "1st Floor Slab",
+      addedBy: { name: "Sam Watson", avatar: "https://i.pravatar.cc/150?u=3" },
+      assignStaff: [
+        { name: "User 1", avatar: "https://i.pravatar.cc/150?u=15" },
+        { name: "User 2", avatar: "https://i.pravatar.cc/150?u=16" },
+        { name: "User 3", avatar: "https://i.pravatar.cc/150?u=17" },
+      ],
+      priority: "Low",
+      dueDate: "24-7-2024",
+      level: "High",
+      fileSize: "70.47 KB",
+      attachments: 8,
+      comments: 8,
     },
     {
-      key: "role",
-      label: "Role",
-      accessor: "role",
-      sortable: true,
-      render: (user) => (
-        <span
-          className={`px-2 py-1 text-xs font-semibold rounded-full ${
-            user.role === "admin"
-              ? "bg-purple-100 text-purple-800"
-              : user.role === "moderator"
-              ? "bg-blue-100 text-blue-800"
-              : "bg-gray-100 text-gray-800"
-          }`}
-        >
-          {user.role.toUpperCase()}
-        </span>
-      ),
+      id: "4",
+      name: "Services Page.docx",
+      type: "Word Document",
+      taskLink: "2nd Floor Slab",
+      addedBy: { name: "Sam Watson", avatar: "https://i.pravatar.cc/150?u=3" },
+      assignStaff: [
+        { name: "User 1", avatar: "https://i.pravatar.cc/150?u=18" },
+      ],
+      priority: "High",
+      dueDate: "24-7-2024",
+      level: "Medium",
+      fileSize: "70.47 KB",
     },
     {
-      key: "status",
-      label: "Status",
-      accessor: "status",
-      sortable: true,
-      render: (user) => (
-        <span
-          className={`px-2 py-1 text-xs font-semibold rounded-full ${
-            user.status === "active"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          }`}
-        >
-          {user.status}
-        </span>
-      ),
+      id: "5",
+      name: "Transit Authority - New Permitting Requirements",
+      type: "Change",
+      taskLink: "Finishing Plan",
+      addedBy: { name: "Mike Smith", avatar: "https://i.pravatar.cc/150?u=1" },
+      assignStaff: [
+        { name: "User 1", avatar: "https://i.pravatar.cc/150?u=19" },
+        { name: "User 2", avatar: "https://i.pravatar.cc/150?u=20" },
+        { name: "User 3", avatar: "https://i.pravatar.cc/150?u=21" },
+      ],
+      priority: "High",
+      dueDate: "24-7-2024",
+      level: "Low",
+      fileSize: "70.47 MB",
+      attachments: 2,
+      comments: 2,
     },
     {
-      key: "department",
-      label: "Department",
-      accessor: "department",
-      sortable: true,
-      hideOnMobile: true,
+      id: "6",
+      name: "marketing_strategy_2025.pdf",
+      type: "PDF",
+      taskLink: "Strategy",
+      addedBy: { name: "Mike Smith", avatar: "https://i.pravatar.cc/150?u=1" },
+      assignStaff: [{ name: "User 4" }],
+      priority: "Medium",
+      dueDate: "25-7-2024",
+      level: "Medium",
+      fileSize: "2.5 MB",
     },
     {
-      key: "age",
-      label: "Age",
-      accessor: "age",
-      sortable: true,
-      align: "center",
-      width: "100px",
+      id: "7",
+      name: "client_feedback_summary.docx",
+      type: "Word Document",
+      taskLink: "Review",
+      addedBy: {
+        name: "Jennifer Jones",
+        avatar: "https://i.pravatar.cc/150?u=2",
+      },
+      assignStaff: [{ name: "User 2" }],
+      priority: "Low",
+      dueDate: "26-7-2024",
+      level: "Low",
+      fileSize: "15 KB",
+    },
+    {
+      id: "8",
+      name: "site_survey_images.zip",
+      type: "Archive",
+      taskLink: "Site Analysis",
+      addedBy: { name: "Sam Watson", avatar: "https://i.pravatar.cc/150?u=3" },
+      assignStaff: [{ name: "User 3" }],
+      priority: "High",
+      dueDate: "27-7-2024",
+      level: "High",
+      fileSize: "124 MB",
+    },
+    {
+      id: "9",
+      name: "budget_proposal_final.xlsx",
+      type: "Excel",
+      taskLink: "Finance",
+      addedBy: { name: "Mike Smith", avatar: "https://i.pravatar.cc/150?u=1" },
+      assignStaff: [{ name: "User 1" }],
+      priority: "High",
+      dueDate: "28-7-2024",
+      level: "Medium",
+      fileSize: "1.2 MB",
+    },
+    {
+      id: "10",
+      name: "interior_design_mockups.png",
+      type: "Image",
+      taskLink: "Staging",
+      addedBy: {
+        name: "Jennifer Jones",
+        avatar: "https://i.pravatar.cc/150?u=2",
+      },
+      assignStaff: [{ name: "User 5" }],
+      priority: "Medium",
+      dueDate: "29-7-2024",
+      level: "Low",
+      fileSize: "4.8 MB",
+    },
+    {
+      id: "11",
+      name: "structural_audit_v2.pdf",
+      type: "PDF",
+      taskLink: "Audit",
+      addedBy: { name: "Sam Watson", avatar: "https://i.pravatar.cc/150?u=3" },
+      assignStaff: [{ name: "User 2" }],
+      priority: "Low",
+      dueDate: "30-7-2024",
+      level: "High",
+      fileSize: "3.1 MB",
+    },
+    {
+      id: "12",
+      name: "electrical_plans.dwg",
+      type: "CAD",
+      taskLink: "Wiring",
+      addedBy: { name: "Mike Smith", avatar: "https://i.pravatar.cc/150?u=1" },
+      assignStaff: [{ name: "User 4" }],
+      priority: "High",
+      dueDate: "01-8-2024",
+      level: "Low",
+      fileSize: "45 MB",
+    },
+    {
+      id: "13",
+      name: "safety_protocols_2024.pdf",
+      type: "PDF",
+      taskLink: "Compliance",
+      addedBy: {
+        name: "Jennifer Jones",
+        avatar: "https://i.pravatar.cc/150?u=2",
+      },
+      assignStaff: [{ name: "User 1" }],
+      priority: "Medium",
+      dueDate: "02-8-2024",
+      level: "Medium",
+      fileSize: "1.1 MB",
+    },
+    {
+      id: "14",
+      name: "landscape_concept.jpg",
+      type: "Image",
+      taskLink: "Garden",
+      addedBy: { name: "Sam Watson", avatar: "https://i.pravatar.cc/150?u=3" },
+      assignStaff: [{ name: "User 3" }],
+      priority: "Low",
+      dueDate: "03-8-2024",
+      level: "Low",
+      fileSize: "2.2 MB",
+    },
+    {
+      id: "15",
+      name: "contract_draft_v1.docx",
+      type: "Word Document",
+      taskLink: "Legal",
+      addedBy: { name: "Mike Smith", avatar: "https://i.pravatar.cc/150?u=1" },
+      assignStaff: [{ name: "User 5" }],
+      priority: "High",
+      dueDate: "04-8-2024",
+      level: "High",
+      fileSize: "95 KB",
     },
   ];
 
-  // ============================================
-  // Filter Handlers
-  // ============================================
-  const handleFilterChange = (key: keyof FilterOptions, value: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value || undefined,
-    }));
-    setCurrentPage(1); // Reset to first page when filters change
+  const getFileIcon = (fileName: string) => {
+    const ext = fileName.split(".").pop()?.toLowerCase();
+    if (["jpg", "jpeg", "png", "gif"].includes(ext || ""))
+      return <ImageIcon className="h-4 w-4 text-blue-500" />;
+    if (["pdf"].includes(ext || ""))
+      return <FileText className="h-4 w-4 text-rose-500" />;
+    if (["xlsx", "xls", "csv"].includes(ext || ""))
+      return <FileCode className="h-4 w-4 text-emerald-500" />;
+    if (["docx", "doc"].includes(ext || ""))
+      return <FileIcon className="h-4 w-4 text-blue-600" />;
+    if (["mp4", "mov", "avi"].includes(ext || ""))
+      return <FileVideo className="h-4 w-4 text-amber-500" />;
+    return <FileIcon className="h-4 w-4 text-gray-400" />;
   };
 
-  const clearFilters = () => {
-    setFilters({
-      role: "",
-      status: "",
-      department: "",
-      ageMin: undefined,
-      ageMax: undefined,
-    });
-    setSearchQuery("");
-    setCurrentPage(1);
-  };
-
-  const hasActiveFilters = () => {
-    return (
-      searchQuery ||
-      filters.role ||
-      filters.status ||
-      filters.department ||
-      filters.ageMin ||
-      filters.ageMax
-    );
-  };
-
-  // ============================================
-  // Bulk Actions
-  // ============================================
-  const handleBulkDelete = async () => {
-    if (selectedUsers.length === 0) {
-      alert("Please select users to delete");
-      return;
-    }
-
-    const confirmed = confirm(
-      `Are you sure you want to delete ${selectedUsers.length} user(s)?`
-    );
-
-    if (confirmed) {
-      setLoading(true);
-
-      // In real implementation:
-      // await fetch('/api/users/bulk-delete', {
-      //   method: 'DELETE',
-      //   body: JSON.stringify({ ids: selectedUsers.map(u => u.id) })
-      // });
-
-      console.log(
-        "Deleting users:",
-        selectedUsers.map((u) => u.id)
-      );
-
-      setTimeout(() => {
-        // Remove deleted users from state
-        setUsers((prev) =>
-          prev.filter((user) => !selectedUsers.some((su) => su.id === user.id))
-        );
-        setSelectedUsers([]);
-        setLoading(false);
-        alert(`Successfully deleted ${selectedUsers.length} user(s)`);
-      }, 1000);
-    }
-  };
-
-  const handleBulkExport = () => {
-    if (selectedUsers.length === 0) {
-      alert("Please select users to export");
-      return;
-    }
-
-    // Convert to CSV
-    const headers = [
-      "ID",
-      "Name",
-      "Email",
-      "Role",
-      "Status",
-      "Department",
-      "Age",
-    ];
-    const csvContent = [
-      headers.join(","),
-      ...selectedUsers.map((user) =>
-        [
-          user.id,
-          user.name,
-          user.email,
-          user.role,
-          user.status,
-          user.department,
-          user.age,
-        ].join(",")
+  const columns: Column<ProjectFile>[] = [
+    {
+      key: "name",
+      label: "File Name",
+      width: "120px",
+      render: (row) => (
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gray-50 rounded-lg group-hover:scale-110 transition-transform">
+            {getFileIcon(row.name)}
+          </div>
+          <span className="truncate max-w-[220px]">{row.name}</span>
+        </div>
       ),
-    ].join("\n");
-
-    // Create download link
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `users_export_${new Date().toISOString()}.csv`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-
-    console.log("Exported users:", selectedUsers);
-  };
-
-  const handleExportAll = () => {
-    // Export all users (not just selected)
-    const headers = [
-      "ID",
-      "Name",
-      "Email",
-      "Role",
-      "Status",
-      "Department",
-      "Age",
-    ];
-    const csvContent = [
-      headers.join(","),
-      ...users.map((user) =>
-        [
-          user.id,
-          user.name,
-          user.email,
-          user.role,
-          user.status,
-          user.department,
-          user.age,
-        ].join(",")
+      sortable: true,
+    },
+    {
+      key: "taskLink",
+      label: "Task Link",
+      accessor: "taskLink",
+      sortable: true,
+    },
+    {
+      key: "addedBy",
+      label: "Added By",
+      render: (row) => (
+        <div className="flex items-center gap-2">
+          <Avatar src={row.addedBy.avatar} name={row.addedBy.name} size="md" />
+          <span className="text-gray-900">{row.addedBy.name}</span>
+        </div>
       ),
-    ].join("\n");
+    },
+    {
+      key: "assignStaff",
+      label: "Assign Staff",
+      render: (row) => (
+        <AvatarStack users={row.assignStaff} limit={3} size="md" />
+      ),
+      showTooltip: false,
+    },
+    {
+      key: "priority",
+      label: "Priority",
+      render: (row) => (
+        <div className="flex items-center gap-1.5">
+          <StatusPill
+            label={row.priority}
+            variant={
+              row.priority === "High"
+                ? "danger"
+                : row.priority === "Medium"
+                  ? "warning"
+                  : "success"
+            }
+          />
+        </div>
+      ),
+    },
+    {
+      key: "dueDate",
+      label: "Due Date",
+      accessor: "dueDate",
+    },
+    {
+      key: "level",
+      label: "Level",
+      render: (row) => (
+        <StatusPill
+          label={row.level}
+          variant={
+            row.level === "High"
+              ? "danger"
+              : row.level === "Medium"
+                ? "warning"
+                : "success"
+          }
+        />
+      ),
+    },
+    {
+      key: "fileSize",
+      label: "File Size",
+      accessor: "fileSize",
+      align: "right",
+    },
+  ];
 
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `all_users_export_${new Date().toISOString()}.csv`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-  };
-
-  // ============================================
-  // Row Actions
-  // ============================================
-  const handleEdit = (user: User) => {
-    console.log("Edit user:", user);
-    alert(`Editing user: ${user.name}`);
-  };
-
-  const handleDelete = async (user: User) => {
-    const confirmed = confirm(`Are you sure you want to delete ${user.name}?`);
-
-    if (confirmed) {
-      setLoading(true);
-      // API call: await fetch(`/api/users/${user.id}`, { method: 'DELETE' });
-      console.log("Delete user:", user);
-
-      setTimeout(() => {
-        setUsers((prev) => prev.filter((u) => u.id !== user.id));
-        setLoading(false);
-        alert(`Deleted user: ${user.name}`);
-      }, 500);
-    }
-  };
-
-  const handleView = (user: User) => {
-    console.log("View user:", user);
-    alert(`Viewing user: ${user.name}`);
-  };
-
-  // ============================================
-  // Render
-  // ============================================
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold mb-2">Advanced User Management</h2>
-        <p className="text-gray-600">
-          Search, filter, and manage users with bulk actions
-        </p>
-      </div>
-
-      {/* Search & Filter Bar */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Search Input */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search by name or email..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Filter Toggle Button */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
-              showFilters
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            <Filter className="w-4 h-4" />
-            Filters
-            {hasActiveFilters() && (
-              <span className="bg-white text-blue-600 text-xs px-2 py-0.5 rounded-full">
-                Active
-              </span>
-            )}
-          </button>
-
-          {/* Clear Filters */}
-          {hasActiveFilters() && (
-            <button
-              onClick={clearFilters}
-              className="px-4 py-2 bg-red-100 text-red-700 rounded-lg font-medium hover:bg-red-200 flex items-center gap-2"
-            >
-              <X className="w-4 h-4" />
-              Clear
-            </button>
-          )}
-        </div>
-
-        {/* Filter Panel */}
-        {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {/* Role Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Role
-              </label>
-              <select
-                value={filters.role || ""}
-                onChange={(e) => handleFilterChange("role", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-                <option value="moderator">Moderator</option>
-              </select>
-            </div>
-
-            {/* Status Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Status
-              </label>
-              <SelectField
-                options={[
-                  { value: "", label: "All Status" },
-                  { value: "active", label: "Active" },
-                  { value: "inactive", label: "Inactive" },
-                ]}
-                value={filters.status || ""}
-                onChange={(val) => handleFilterChange("status", val)}
-                placeholder="All Status"
-                className="h-10 bg-white"
-              />
-            </div>
-
-            {/* Department Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Department
-              </label>
-              <SelectField
-                options={[
-                  { value: "", label: "All Departments" },
-                  { value: "Engineering", label: "Engineering" },
-                  { value: "Marketing", label: "Marketing" },
-                  { value: "Sales", label: "Sales" },
-                  { value: "HR", label: "HR" },
-                ]}
-                value={filters.department || ""}
-                onChange={(val) => handleFilterChange("department", val)}
-                placeholder="All Departments"
-                className="h-10 bg-white"
-              />
-            </div>
-
-            {/* Age Min Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Min Age
-              </label>
-              <input
-                type="number"
-                value={filters.ageMin || ""}
-                onChange={(e) => handleFilterChange("ageMin", e.target.value)}
-                placeholder="Min"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Age Max Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Max Age
-              </label>
-              <input
-                type="number"
-                value={filters.ageMax || ""}
-                onChange={(e) => handleFilterChange("ageMax", e.target.value)}
-                placeholder="Max"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Bulk Actions Bar */}
-      {selectedUsers.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-blue-900">
-              {selectedUsers.length} user(s) selected
-            </span>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handleBulkExport}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 flex items-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              Export Selected
-            </button>
-            <button
-              onClick={handleBulkDelete}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 flex items-center gap-2"
-            >
-              <Trash2 className="w-4 h-4" />
-              Delete Selected
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Additional Actions */}
-      <div className="mb-4 flex justify-between items-center">
-        <div className="text-sm text-gray-600">
-          Showing {users.length} of {totalRecords} users
-        </div>
-        <button
-          onClick={handleExportAll}
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 flex items-center gap-2"
-        >
-          <Download className="w-4 h-4" />
-          Export All
-        </button>
-      </div>
-
-      {/* Table */}
+    <div className="p-8 space-y-6">
       <DynamicTable
-        data={users}
+        title="User Table"
+        data={files}
         columns={columns}
         selectable
-        onSelectionChange={setSelectedUsers}
         pagination
-        pageSize={pageSize}
-        hoverable
+        pageSize={5}
         striped
-        loading={loading}
-        emptyMessage="No users found. Try adjusting your search or filters."
-        actions={[
+        searchable
+        searchPlaceholder="Search Users..."
+        bulkActions={[
           {
-            label: "View",
-            onClick: handleView,
-            icon: <Eye className="w-4 h-4" />,
-            variant: "secondary",
+            label: "Download",
+            onClick: (selected) =>
+              alert(`Downloading ${selected.length} files`),
+            icon: <Download size={16} />,
           },
           {
-            label: "Edit",
-            onClick: handleEdit,
-            icon: <Pencil className="w-4 h-4" />,
-            variant: "primary",
+            label: "Share",
+            onClick: (selected) => alert(`Sharing ${selected.length} files`),
+            icon: <Share2 size={16} />,
           },
           {
             label: "Delete",
-            onClick: handleDelete,
-            icon: <Trash2 className="w-4 h-4" />,
+            onClick: (selected) => alert(`Deleting ${selected.length} files`),
+            icon: <Trash2 size={16} />,
             variant: "danger",
           },
         ]}
-        getRowKey={(user) => user.id.toString()}
+        actions={[
+          {
+            label: "View",
+            onClick: (row) => alert(`Viewing ${row.name}`),
+            icon: <Eye size={18} />,
+          },
+          {
+            label: "Edit",
+            onClick: (row) => alert(`Editing ${row.name}`),
+            icon: <Pencil size={18} />,
+          },
+          {
+            label: "Delete",
+            onClick: (row) => alert(`Deleting ${row.name}`),
+            icon: <Trash2 size={18} />,
+            variant: "danger",
+          },
+        ]}
       />
     </div>
   );

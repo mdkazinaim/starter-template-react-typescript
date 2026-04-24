@@ -16,7 +16,8 @@
   --primary-background: #161e49;
   --light-background: #fefefe;
   --border-color: #e8eaeb;
-
+  --bg-stripe-1: rgba(255, 255, 255, 1);
+  --bg-stripe-2: rgba(248, 248, 248, 1);
   --primary-blue: #0082fa;
   --dark-blue: #161e49;
   --light-gray: #70797e;
