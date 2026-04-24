@@ -272,7 +272,8 @@ const DynamicTable = <T extends Record<string, unknown>>({
     }
     if (column.accessor) {
       const val = row[column.accessor as keyof T];
-      if (typeof val === "string" || typeof val === "number") return String(val);
+      if (typeof val === "string" || typeof val === "number")
+        return String(val);
     }
 
     // If no accessor, check the data object using the key
@@ -339,12 +340,12 @@ const DynamicTable = <T extends Record<string, unknown>>({
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-4 focus:ring-primary-background/10 focus:bg-white transition-all"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-4 focus:ring-primary-brand/10 focus:bg-white transition-all"
               />
             </div>
           )}
 
-          <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all">
+          <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all min-w-fit">
             <Filter className="h-4 w-4" />
             Filter By
           </button>
@@ -353,9 +354,9 @@ const DynamicTable = <T extends Record<string, unknown>>({
 
       {/* Selected Items Toolbar */}
       {selectable && selectedRows.size > 0 && (
-        <div className="px-6 py-3 bg-primary-background/[0.03] border-b border-gray-50 flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="px-6 py-3 bg-primary-brand/[0.03] border-b border-gray-50 flex items-center justify-between animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="flex items-center gap-4">
-            <span className="text-sm font-bold text-primary-background bg-primary-background/10 px-3 py-1 rounded-full">
+            <span className="text-sm font-bold text-primary-brand bg-primary-brand/10 px-3 py-1 rounded-full">
               {selectedRows.size} Selected
             </span>
             <div className="h-4 w-px bg-gray-200" />
@@ -378,7 +379,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                       action.variant === "danger"
                         ? "text-rose-500 hover:bg-rose-50"
                         : action.variant === "primary"
-                          ? "text-primary-background hover:bg-primary-background/5"
+                          ? "text-primary-brand hover:bg-primary-brand/5"
                           : "text-gray-600 hover:bg-gray-100",
                     )}
                   >
@@ -408,7 +409,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                           selectedRows.size === paginatedData.length
                         }
                         onChange={(e) => handleSelectAll(e.target.checked)}
-                        className="h-4 w-4 rounded border-gray-300 text-primary-background focus:ring-primary-background/20 transition-all cursor-pointer"
+                        className="h-4 w-4 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer"
                       />
                     </div>
                   </th>
@@ -423,35 +424,33 @@ const DynamicTable = <T extends Record<string, unknown>>({
                     )}
                     style={{ width: column.width }}
                   >
-                    <Tooltip content={column.label}>
-                      {column.sortable ? (
-                        <button
-                          onClick={() => handleSort(column.key)}
-                          className="group flex items-center gap-2 hover:text-gray-900 transition-colors w-full"
-                        >
-                          {column.label}
-                          <div className="flex flex-col text-gray-400 group-hover:text-primary-background transition-colors">
-                            {sortConfig?.key === column.key ? (
-                              sortConfig.direction === "asc" ? (
-                                <ChevronUp
-                                  size={14}
-                                  className="text-primary-background"
-                                />
-                              ) : (
-                                <ChevronDown
-                                  size={14}
-                                  className="text-primary-background"
-                                />
-                              )
+                    {column.sortable ? (
+                      <button
+                        onClick={() => handleSort(column.key)}
+                        className="group flex items-center gap-2 hover:text-gray-900 transition-colors w-full"
+                      >
+                        {column.label}
+                        <div className="flex flex-col text-gray-400 group-hover:text-primary-brand transition-colors">
+                          {sortConfig?.key === column.key ? (
+                            sortConfig.direction === "asc" ? (
+                              <ChevronUp
+                                size={14}
+                                className="text-primary-brand"
+                              />
                             ) : (
-                              <ChevronsUpDown size={14} className="opacity-50" />
-                            )}
-                          </div>
-                        </button>
-                      ) : (
-                        column.label
-                      )}
-                    </Tooltip>
+                              <ChevronDown
+                                size={14}
+                                className="text-primary-brand"
+                              />
+                            )
+                          ) : (
+                            <ChevronsUpDown size={14} className="opacity-50" />
+                          )}
+                        </div>
+                      </button>
+                    ) : (
+                      column.label
+                    )}
                   </th>
                 ))}
                 {actions && actions.length > 0 && (
@@ -472,7 +471,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                     className="px-6 py-20 text-center"
                   >
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-8 h-8 border-[3px] border-primary-background/20 border-t-primary-background rounded-full animate-spin" />
+                      <div className="w-8 h-8 border-[3px] border-primary-brand/20 border-t-primary-brand rounded-full animate-spin" />
                       <p className="text-sm font-semibold text-gray-400">
                         Loading data...
                       </p>
@@ -507,13 +506,15 @@ const DynamicTable = <T extends Record<string, unknown>>({
                       key={rowKey}
                       className={cn(
                         "transition-all duration-200 border-b border-gray-50 last:border-0",
-                        striped 
-                          ? (index % 2 === 0 ? "bg-[var(--bg-stripe-1)]" : "bg-[var(--bg-stripe-2)]")
+                        striped
+                          ? index % 2 === 0
+                            ? "bg-[var(--bg-stripe-1)]"
+                            : "bg-[var(--bg-stripe-2)]"
                           : "bg-white",
                         hoverable &&
                           "hover:bg-gray-50/80 hover:shadow-[inset_4px_0_0_0_#3b82f6]",
                         isSelected &&
-                          "bg-primary-background/[0.02] shadow-[inset_4px_0_0_0_#3b82f6]",
+                          "bg-primary-brand/[0.02] shadow-[inset_4px_0_0_0_#3b82f6]",
                         rowClassName?.(row, index),
                       )}
                     >
@@ -525,7 +526,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                             onChange={(e) =>
                               handleSelectRow(rowKey, e.target.checked)
                             }
-                            className="h-4 w-4 rounded border-gray-300 text-primary-background focus:ring-primary-background/20 transition-all cursor-pointer"
+                            className="h-4 w-4 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer"
                           />
                         </td>
                       )}
@@ -542,7 +543,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                             <div
                               className={cn(
                                 !column.render && "truncate",
-                                "w-full"
+                                "w-full",
                               )}
                               style={{ maxWidth: column.width || "none" }}
                             >
@@ -593,7 +594,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                   selectedRows.size === paginatedData.length
                 }
                 onChange={(e) => handleSelectAll(e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 text-primary-background focus:ring-primary-background/20 transition-all cursor-pointer"
+                className="h-4 w-4 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer"
               />
               <span className="text-sm font-bold text-gray-700">
                 Select All
@@ -608,7 +609,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
         {loading ? (
           <div className="px-6 py-20 text-center">
             <div className="flex flex-col items-center gap-3">
-              <div className="w-8 h-8 border-[3px] border-primary-background/20 border-t-primary-background rounded-full animate-spin" />
+              <div className="w-8 h-8 border-[3px] border-primary-brand/20 border-t-primary-brand rounded-full animate-spin" />
               <p className="text-sm font-semibold text-gray-400">
                 Loading data...
               </p>
@@ -632,9 +633,11 @@ const DynamicTable = <T extends Record<string, unknown>>({
                 key={rowKey}
                 className={cn(
                   "p-4 transition-all duration-200",
-                  isSelected 
-                    ? "bg-primary-background/[0.02]" 
-                    : (striped && index % 2 !== 0 ? "bg-[var(--bg-stripe-2)]" : "bg-[var(--bg-stripe-1)]"),
+                  isSelected
+                    ? "bg-primary-brand/[0.02]"
+                    : striped && index % 2 !== 0
+                      ? "bg-[var(--bg-stripe-2)]"
+                      : "bg-[var(--bg-stripe-1)]",
                   selectable && "pr-8 sm:pr-10",
                 )}
               >
@@ -646,7 +649,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                       onChange={(e) =>
                         handleSelectRow(rowKey, e.target.checked)
                       }
-                      className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-background focus:ring-primary-background/20"
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20"
                     />
                   )}
 
@@ -658,7 +661,9 @@ const DynamicTable = <T extends Record<string, unknown>>({
                           key={column.key}
                           className={cn(
                             "flex flex-col items-start gap-0.5 rounded-lg p-2 transition-colors",
-                            striped && colIdx % 2 !== 0 ? "bg-[var(--bg-stripe-2)]" : "bg-transparent"
+                            striped && colIdx % 2 !== 0
+                              ? "bg-[var(--bg-stripe-2)]"
+                              : "bg-transparent",
                           )}
                         >
                           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
@@ -681,13 +686,18 @@ const DynamicTable = <T extends Record<string, unknown>>({
                             key={column.key}
                             className={cn(
                               "flex items-center justify-between gap-4 px-3 py-2.5 rounded-lg transition-colors",
-                              striped && colIdx % 2 !== 0 ? "bg-[var(--bg-stripe-2)]" : "bg-transparent"
+                              striped && colIdx % 2 !== 0
+                                ? "bg-[var(--bg-stripe-2)]"
+                                : "bg-transparent",
                             )}
                           >
                             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">
                               {column.label}
                             </span>
-                            <Tooltip content={getTooltipText(row, column)} className="right-0 translate-x-0">
+                            <Tooltip
+                              content={getTooltipText(row, column)}
+                              className="right-0 translate-x-0"
+                            >
                               <div className="text-[13px] font-bold text-gray-700 leading-tight text-right truncate max-w-[150px]">
                                 {getCellValue(row, column)}
                               </div>
@@ -728,7 +738,7 @@ const DynamicTable = <T extends Record<string, unknown>>({
                       {secondaryColumns.length > 0 && (
                         <button
                           onClick={() => toggleRowExpansion(rowKey)}
-                          className="flex items-center gap-1 text-[11px] font-bold text-primary-background hover:opacity-80 transition-all bg-primary-background/5 px-2.5 py-1.5 rounded-sm"
+                          className="flex items-center gap-1 text-[11px] font-bold text-primary-brand hover:opacity-80 transition-all bg-primary-brand/5 px-2.5 py-1.5 rounded-sm"
                         >
                           {isExpanded ? "Show Less" : "Show More"}
                           {isExpanded ? (

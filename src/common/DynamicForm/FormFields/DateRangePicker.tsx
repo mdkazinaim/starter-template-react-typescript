@@ -122,7 +122,7 @@ export const DateRangePicker = ({
               Reset
             </Button>
             <Button
-              className="flex-1 h-9 text-xs bg-primary-background hover:bg-primary-background/90 text-white font-semibold rounded-lg"
+              className="flex-1 h-9 text-xs bg-primary-brand hover:bg-primary-brand/90 text-white font-semibold rounded-lg"
               onClick={() => setOpen(false)}
             >
               Apply

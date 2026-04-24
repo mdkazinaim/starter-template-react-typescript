@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-primary-background shadow-lg">
+    <nav className="bg-primary-brand shadow-lg">
       <CommonWrapper className="px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}

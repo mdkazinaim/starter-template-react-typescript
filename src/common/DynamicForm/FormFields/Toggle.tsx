@@ -28,7 +28,7 @@ export const Toggle = ({
       onClick={() => onChange(!value)}
     >
       {label && (
-        <Label className={cn("text-sm font-bold text-foreground/80 cursor-pointer group-hover:text-primary-background transition-colors", error && "text-red-600")}>
+        <Label className={cn("text-sm font-bold text-foreground/80 cursor-pointer group-hover:text-primary-text transition-colors", error && "text-red-600")}>
           {label}
           {required && <span className="text-red-400 ml-1">*</span>}
         </Label>
@@ -36,8 +36,8 @@ export const Toggle = ({
       <button
         type="button"
         className={cn(
-          "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-background focus:ring-offset-2",
-          value ? "bg-primary-background border-primary-background" : "bg-gray-300 border-gray-300",
+          "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-brand focus:ring-offset-2",
+          value ? "bg-primary-brand border-primary-brand" : "bg-gray-300 border-gray-300",
           error && "ring-2 ring-red-500 ring-offset-2"
         )}
       >

@@ -15,7 +15,7 @@ export const ColorPicker = ({
 }: ColorPickerProps) => {
   return (
     <div className={cn(
-      "flex items-center gap-3 bg-gray-50/50 border border-gray-200 rounded-lg p-0.5 h-11 transition-all duration-200 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary-background/10",
+      "flex items-center gap-3 bg-gray-50/50 border border-gray-200 rounded-lg p-0.5 h-11 transition-all duration-200 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary-brand/10",
       error && "border-red-500",
       className
     )}>

@@ -25,6 +25,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { FileUpload } from "./FormFields/FileUpload";
+import { Tooltip } from "@/common/Tooltip";
+
 
 // ============================================
 // 🎨 Helper Components (Outside to prevent remounting)
@@ -46,7 +48,7 @@ const FieldLabel = ({
   <Label
     htmlFor={htmlFor}
     className={cn(
-      "block text-sm font-semibold mb-2.5 text-foreground/80 transition-colors group-focus-within:text-primary-background",
+      "block text-sm font-semibold mb-2.5 text-foreground/80 transition-colors group-focus-within:text-primary-text",
       error && "text-red-600 group-focus-within:text-red-600",
       className,
     )}
@@ -195,28 +197,32 @@ const CommonForm = <T extends Record<string, unknown>>({
                 }
                 placeholder={field.placeholder}
                 className={cn(
-                  "h-11 bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-background/50 focus:ring-4 focus:ring-primary-background/10 transition-all duration-200 rounded-lg",
-                  error && "border-red-500 focus:ring-primary-background/10",
+                  "h-11 bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg",
+                  error && "border-red-500 focus:ring-primary-brand/10",
                 )}
                 {...register(field.name as Path<T>)}
               />
               {field.type === "password" && (
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowPassword((prev) => ({
-                      ...prev,
-                      [field.name]: !prev[field.name],
-                    }))
-                  }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {showPassword[field.name] ? (
-                    <EyeOff size={18} />
-                  ) : (
-                    <Eye size={18} />
-                  )}
-                </button>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <Tooltip content={showPassword[field.name] ? "Hide Password" : "Show Password"}>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowPassword((prev) => ({
+                          ...prev,
+                          [field.name]: !prev[field.name],
+                        }))
+                      }
+                      className="text-muted-foreground hover:text-primary-text transition-colors p-1"
+                    >
+                      {showPassword[field.name] ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </Tooltip>
+                </div>
               )}
             </div>
             <FieldHelper text={field.helpText} />
@@ -237,8 +243,8 @@ const CommonForm = <T extends Record<string, unknown>>({
               id={field.name}
               placeholder={field.placeholder}
               className={cn(
-                "min-h-[120px] bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-background/50 focus:ring-4 focus:ring-primary-background/10 transition-all duration-200 rounded-lg resize-none",
-                error && "border-red-500 focus:ring-primary-background/10",
+                "min-h-[120px] bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg resize-none",
+                error && "border-red-500 focus:ring-primary-brand/10",
               )}
               {...register(field.name as Path<T>)}
             />
@@ -494,8 +500,8 @@ const CommonForm = <T extends Record<string, unknown>>({
                 id={field.name}
                 type="time"
                 className={cn(
-                  "h-11 bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-background/50 focus:ring-4 focus:ring-primary-background/10 transition-all duration-200 rounded-lg cursor-pointer",
-                  error && "border-red-500 focus:ring-primary-background/10",
+                  "h-11 bg-gray-50/50 border-gray-200 focus:bg-white focus:border-primary-brand/50 focus:ring-4 focus:ring-primary-brand/10 transition-all duration-200 rounded-lg cursor-pointer",
+                  error && "border-red-500 focus:ring-primary-brand/10",
                 )}
                 {...register(field.name as Path<T>)}
               />
@@ -619,7 +625,7 @@ const CommonForm = <T extends Record<string, unknown>>({
         <Button
           type="submit"
           disabled={loading || isSubmitting}
-          className="px-10 h-11 rounded-lg font-semibold bg-primary-background hover:bg-primary-background/90 text-white shadow-lg shadow-primary-background/20 transition-all active:scale-[0.98]"
+          className="px-10 h-11 rounded-lg font-semibold bg-primary-brand hover:bg-primary-brand/90 text-white shadow-lg shadow-primary-brand/20 transition-all active:scale-[0.98]"
         >
           {loading || isSubmitting ? "Submitting..." : submitButtonText}
         </Button>

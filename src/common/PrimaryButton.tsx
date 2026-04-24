@@ -12,13 +12,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-[#1C73E0] text-white border border-[#1C73E0] hover:bg-white hover:text-[#1C73E0] shadow-sm",
+          "bg-primary-brand text-white border border-primary-brand hover:opacity-90 shadow-sm",
         outline:
-          "border border-[#C8CFD9] bg-white text-gray-700 hover:border-[#1C73E0] hover:text-[#1C73E0] shadow-sm",
-        ghost: "text-[#1C73E0] hover:bg-blue-50",
+          "border border-gray-200 bg-white text-gray-700 hover:border-primary-brand hover:text-primary-brand shadow-sm",
+        ghost: "text-primary-brand hover:bg-gray-50",
         danger: "bg-red-600 text-white border border-red-600 hover:bg-white hover:text-red-600 shadow-sm",
         success: "bg-emerald-600 text-white border border-emerald-600 hover:bg-white hover:text-emerald-600 shadow-sm",
-        secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200 border border-slate-200",
+        secondary: "bg-secondary-brand text-white border border-secondary-brand hover:opacity-90 shadow-sm",
       },
       size: {
         sm: "h-9 px-3 text-xs",

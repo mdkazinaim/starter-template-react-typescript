@@ -93,7 +93,7 @@ export const FileUpload = ({
         onDrop={onDrop}
         className={cn(
           "relative border-2 border-dashed rounded-xl p-8 transition-all duration-200 group cursor-pointer",
-          "hover:border-primary-background/50 hover:bg-primary-background/5",
+          "hover:border-primary-brand/50 hover:bg-primary-brand/5",
           error ? "border-red-500 bg-red-50" : "border-gray-200 bg-gray-50/50"
         )}
       >
@@ -106,7 +106,7 @@ export const FileUpload = ({
         />
         <div className="flex flex-col items-center justify-center space-y-3 pointer-events-none">
           <div className="p-3 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform">
-            <Upload className="h-6 w-6 text-primary-background" />
+            <Upload className="h-6 w-6 text-primary-text" />
           </div>
           <div className="text-center">
             <p className="text-sm font-bold text-gray-700">Click or drag to upload</p>

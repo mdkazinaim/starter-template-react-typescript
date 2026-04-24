@@ -64,7 +64,7 @@ export const MultiSelectField = ({
                 return (
                   <span
                     key={v}
-                    className="bg-primary-background/10 text-primary-background text-[11px] font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-primary-background/20"
+                    className="bg-primary-brand/10 text-primary-text text-[11px] font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border border-primary-brand/20"
                   >
                     {label}
                     <button
@@ -127,15 +127,15 @@ export const MultiSelectField = ({
                   toggleOption(val);
                 }}
                 className={cn(
-                  "relative flex cursor-pointer select-none items-center rounded-md px-2 py-2.5 text-sm outline-none hover:bg-primary-background/5 transition-colors mx-1",
-                  isSelected && "bg-primary-background/10 text-primary-background font-medium"
+                  "relative flex cursor-pointer select-none items-center rounded-md px-2 py-2.5 text-sm outline-none hover:bg-primary-brand/5 transition-colors mx-1",
+                  isSelected && "bg-primary-brand/10 text-primary-text font-medium"
                 )}
               >
                 <div
                   className={cn(
                     "mr-3 flex h-4 w-4 items-center justify-center rounded-sm border transition-all",
                     isSelected
-                      ? "bg-primary-background border-primary-background text-white"
+                      ? "bg-primary-brand border-primary-brand text-white"
                       : "border-gray-300 opacity-70"
                   )}
                 >

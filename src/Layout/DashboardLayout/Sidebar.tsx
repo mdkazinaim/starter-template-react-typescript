@@ -39,8 +39,8 @@ const NavItem = ({
   const itemClasses = `flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-all duration-200 no-underline!
     ${
       active
-        ? "bg-gray-500 text-white font-medium"
-        : "text-white hover:bg-white hover:text-gray-800"
+        ? "bg-secondary-brand text-white font-medium"
+        : "text-white/70 hover:bg-white/10 hover:text-white"
     }`;
 
   const content = (
@@ -88,7 +88,7 @@ const NavItem = ({
           {/* Invisible bridge */}
           <div className="absolute -left-2 top-0 h-full w-2" />
 
-          <div className="w-52 p-1 bg-gray-800 border border-gray-600 shadow-2xl rounded-md">
+          <div className="w-52 p-1 bg-primary-brand border border-white/10 shadow-2xl rounded-md">
             <div className="space-y-1">
               {item.children!.map((child) => (
                 <NavItem
@@ -118,9 +118,9 @@ const Sidebar = () => {
   }, {});
 
   return (
-    <aside className="w-64 h-screen bg-primary-background text-white sticky top-0 z-40 flex flex-col">
-      <div className="p-4 h-16 text-xl font-bold border-b border-gray-600 flex items-center">
-        <Link to="/" className="no-underline">
+    <aside className="w-64 h-screen bg-primary-brand text-white sticky top-0 z-40 flex flex-col">
+      <div className="p-4 h-16 text-xl font-bold border-b border-white/10 flex items-center">
+        <Link to="/" className="no-underline text-white">
           REACT STARTER TEMPLATE
         </Link>
       </div>
@@ -128,7 +128,7 @@ const Sidebar = () => {
       <nav className="p-2 space-y-4 flex-1 overflow-y-visible overflow-x-visible">
         {Object.entries(groupedMenu).map(([group, items]) => (
           <div key={group}>
-            <p className="px-3 mb-2 text-[10px] font-bold uppercase text-gray-400 tracking-widest">
+            <p className="px-3 mb-2 text-[10px] font-bold uppercase text-white/40 tracking-widest">
               {group}
             </p>
             <div className="space-y-1">

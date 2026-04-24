@@ -5,7 +5,7 @@ import CommonWrapper from "@/common/CommonWrapper";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-primary-background py-8">
+    <footer className="bg-primary-brand py-8">
       <CommonWrapper className="px-4 text-white">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Section */}

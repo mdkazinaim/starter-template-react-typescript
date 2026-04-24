@@ -27,7 +27,7 @@ export const Avatar = ({ src, name, size = "lg", className }: AvatarProps) => {
       className={cn(
         "relative flex shrink-0 overflow-hidden rounded-full border-2 border-gray-300 shadow-sm items-center justify-center font-bold transition-all duration-200",
         sizeClasses[size],
-        src ? "bg-gray-100" : "bg-gray-100 text-primary-background",
+        src ? "bg-gray-100" : "bg-gray-100 text-primary-text",
         className,
       )}
     >

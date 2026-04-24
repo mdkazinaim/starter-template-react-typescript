@@ -26,12 +26,12 @@ export const CheckboxField = ({
           checked={value}
           onChange={(e) => onChange(e.target.checked)}
           className={cn(
-            "peer h-5 w-5 rounded border-gray-300 text-primary-background focus:ring-primary-background/20 transition-all cursor-pointer",
+            "peer h-5 w-5 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer",
             error && "border-red-500"
           )}
         />
       </div>
-      <span className="text-sm font-semibold text-foreground/80 group-hover:text-primary-background transition-colors">
+      <span className="text-sm font-semibold text-foreground/80 group-hover:text-primary-text transition-colors">
         {label}
         {required && <span className="text-red-400 ml-1">*</span>}
       </span>
@@ -81,11 +81,11 @@ export const CheckboxGroupField = ({
               checked={isChecked}
               onChange={() => toggleOption(val)}
               className={cn(
-                "h-5 w-5 rounded border-gray-300 text-primary-background focus:ring-primary-background/20 transition-all cursor-pointer",
+                "h-5 w-5 rounded border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer",
                 error && "border-red-500"
               )}
             />
-            <span className="text-sm font-medium text-foreground/80 group-hover:text-primary-background transition-colors">
+            <span className="text-sm font-medium text-foreground/80 group-hover:text-primary-text transition-colors">
               {label}
             </span>
           </label>

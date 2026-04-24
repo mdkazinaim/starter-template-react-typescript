@@ -36,11 +36,11 @@ export const RadioField = ({
               checked={isChecked}
               onChange={() => onChange(val)}
               className={cn(
-                "h-5 w-5 border-gray-300 text-primary-background focus:ring-primary-background/20 transition-all cursor-pointer",
+                "h-5 w-5 border-gray-300 text-primary-brand focus:ring-primary-brand/20 transition-all cursor-pointer",
                 error && "border-red-500"
               )}
             />
-            <span className="text-sm font-medium text-foreground/80 group-hover:text-primary-background transition-colors">
+            <span className="text-sm font-medium text-foreground/80 group-hover:text-primary-text transition-colors">
               {label}
             </span>
           </label>

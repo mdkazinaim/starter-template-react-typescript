@@ -137,7 +137,7 @@ export const DateTimePicker = ({
               type="time"
               value={timeValue}
               onChange={handleTimeChange}
-              className="h-9 px-3 rounded-lg border border-gray-200 bg-gray-50 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-primary-background/10"
+              className="h-9 px-3 rounded-lg border border-gray-200 bg-gray-50 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-primary-brand/10"
             />
           </div>
           <Button className="w-full h-10 font-semibold rounded-lg" onClick={() => setOpen(false)}>Done</Button>

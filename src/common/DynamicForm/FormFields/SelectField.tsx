@@ -91,8 +91,8 @@ export const SelectField = ({
                   setOpen(false);
                 }}
                 className={cn(
-                  "relative flex cursor-pointer select-none items-center rounded-md px-2 py-2 text-sm outline-none hover:bg-primary-background/5 hover:text-primary-background transition-colors mx-1",
-                  isSelected && "bg-primary-background/10 text-primary-background font-medium"
+                  "relative flex cursor-pointer select-none items-center rounded-md px-2 py-2 text-sm outline-none hover:bg-primary-brand/5 hover:text-primary-text transition-colors mx-1",
+                  isSelected && "bg-primary-brand/10 text-primary-text font-medium"
                 )}
               >
                 <Check

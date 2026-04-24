@@ -37,7 +37,7 @@ const Pagination = ({
 
     // Remove duplicate "..."
     return buttons.filter(
-      (btn, idx, arr) => !(btn === "..." && arr[idx - 1] === "...")
+      (btn, idx, arr) => !(btn === "..." && arr[idx - 1] === "..."),
     );
   };
 
@@ -49,9 +49,12 @@ const Pagination = ({
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-5 border-t border-gray-100 bg-white">
       {/* Showing X-Y of Z */}
-      <div className="text-[13px] font-bold text-gray-400">
-        Showing <span className="text-gray-900">{startItem}-{endItem}</span> of{" "}
-        <span className="text-gray-900">{totalItems}</span>{" "}
+      <div className="text-[14px] font-medium text-gray-500">
+        Showing{" "}
+        <span className="text-gray-700 font-semibold">
+          {startItem}-{endItem}
+        </span>{" "}
+        of <span className="text-gray-700 font-semibold">{totalItems}</span>{" "}
         {label}
       </div>
 
@@ -62,17 +65,20 @@ const Pagination = ({
           <button
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-100 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronLeft size={16} />
             Prev
           </button>
 
           {/* Page Buttons */}
-          <div className="hidden sm:flex items-center gap-1">
+          <div className="hidden sm:flex items-center gap-1.5">
             {getPageButtons().map((btn, idx) =>
               btn === "..." ? (
-                <span key={idx} className="w-9 text-center text-gray-300 font-bold">
+                <span
+                  key={idx}
+                  className="w-9 text-center text-gray-300 font-bold"
+                >
                   ...
                 </span>
               ) : (
@@ -82,13 +88,13 @@ const Pagination = ({
                   className={cn(
                     "w-9 h-9 flex items-center justify-center text-sm font-bold rounded-lg transition-all",
                     currentPage === btn
-                      ? "bg-primary-background text-white shadow-sm shadow-primary-background/20"
-                      : "text-gray-500 hover:bg-gray-50 border border-transparent hover:border-gray-100"
+                      ? "bg-primary-brand text-white shadow-sm shadow-primary-brand/20"
+                      : "text-gray-500 hover:bg-gray-50 border border-gray-200 hover:border-gray-200",
                   )}
                 >
                   {btn}
                 </button>
-              )
+              ),
             )}
           </div>
 
@@ -96,7 +102,7 @@ const Pagination = ({
           <button
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-100 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             Next
             <ChevronRight size={16} />

@@ -96,7 +96,7 @@ const TagsInput = ({
         className={`flex flex-wrap gap-2 p-2.5 border border-gray-200 rounded-lg min-h-[44px] transition-all duration-200 ${
           disabled
             ? "bg-gray-100/50 cursor-not-allowed"
-            : "bg-gray-50/50 hover:bg-gray-50 focus-within:bg-white focus-within:border-primary-background/50 focus-within:ring-4 focus-within:ring-primary-background/10"
+            : "bg-gray-50/50 hover:bg-gray-50 focus-within:bg-white focus-within:border-primary-brand/50 focus-within:ring-4 focus-within:ring-primary-brand/10"
         }`}
         onClick={() => inputRef.current?.focus()}
       >
